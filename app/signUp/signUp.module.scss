@@ -1,0 +1,38 @@
+.container {
+  background-color: bisque;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 24rem;
+  margin-inline: auto;
+  gap: 1rem;
+}
+
+.form {
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+
+.container {
+  input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    background-color: white;
+    &:focus {
+      outline: none;
+      border-color: blue;
+    }
+  }
+}
+
+.container {
+  button {
+    background-color: gray;
+    width: 8rem;
+    border-radius: 10%;
+    &:hover {
+      background-color: aqua;
+    }
+  }
+}

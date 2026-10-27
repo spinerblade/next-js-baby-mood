@@ -30,7 +30,7 @@ export default function LoginForm() {
             setPassword(event.target.value);
           }}
         />
-        <button>Submit</button>
+        <button>Log In</button>
       </div>
     </form>
   );
