@@ -1,0 +1,17 @@
+.dashboardContainer {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  border: 1px solid black;
+  padding: 20px;
+  height: 100vh;
+  position: sticky;
+}
+
+.mainContent {
+  padding: 30px;
+  color: green;
+}
