@@ -1,16 +1,15 @@
 import styles from './dashboard.module.scss';
+import MainInterface from './MainInterface';
 import Sidebar from './Sidebar';
 
 export default function DashboardPage() {
   return (
-    <>
-      <h1>Dashboard</h1>
-      <div className={styles.dashboardContainer}>
-        <Sidebar />
-        <main className={styles.mainContent}>
-          <h2>Placeholder Main Interface</h2>
-        </main>
-      </div>
-    </>
+    <div className={styles.dashboardContainer}>
+      <Sidebar />
+      <main className={styles.mainContent}>
+        <h1>Dashboard</h1>
+        <MainInterface />
+      </main>
+    </div>
   );
 }

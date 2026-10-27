@@ -4,14 +4,8 @@
   min-height: 100vh;
 }
 
-.sidebar {
-  border: 1px solid black;
-  padding: 20px;
-  height: 100vh;
-  position: sticky;
-}
-
 .mainContent {
   padding: 30px;
-  color: green;
+  color: orange;
+  background-color: darkcyan;
 }

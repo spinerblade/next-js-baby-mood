@@ -12,9 +12,11 @@
     "next": "16.4.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "recharts": "^3.10.1",
     "sass": "^1.105.2"
   },
   "devDependencies": {
+    "@recharts/devtools": "^0.0.19",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",

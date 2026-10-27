@@ -10,7 +10,9 @@ export default function Header() {
             <Link href="/dashboard">BabyDashboard</Link>
           </li>
           <li>BabyMood/Chat</li>
-          <li>Achievements/Timeline</li>
+          <li>
+            <Link href="/achievements">Achievements/Timeline</Link>
+          </li>
           <li>TODOList/Tasks</li>
         </ul>
       </nav>
