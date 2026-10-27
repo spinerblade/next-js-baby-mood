@@ -1,6 +1,6 @@
 import LoginForm from './LoginForm';
 
-export default function Login() {
+export default function LoginPage() {
   return (
     <>
       <h1 className="p-8 text-4xl">Login</h1>
