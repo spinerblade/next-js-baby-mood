@@ -1,5 +1,10 @@
 import { SignUpForm } from './SignUpForm';
 
+export const metadata = {
+  title: 'Create an Account',
+  description: 'Page for creating a new account',
+};
+
 export default function SignUpPage() {
   return (
     <>

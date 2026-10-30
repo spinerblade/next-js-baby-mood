@@ -1,5 +1,10 @@
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Sign Up successful',
+  description: 'Landing page after successfully creating a new account',
+};
+
 export default function SignUpSuccessPage() {
   return (
     <>
