@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { signUpHandler } from './actions';
-import styles from './signUp.module.scss';
+import styles from './SignUpForm.module.scss';
 
 export function SignUpForm() {
   const [username, setUsername] = useState('');
