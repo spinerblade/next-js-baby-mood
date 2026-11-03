@@ -1,4 +1,4 @@
-import type { Baby } from '@/migrations/00004-createTableBabies';
+import type { Baby } from '@/migrations/00003-createTableBabies';
 import { cache } from 'react';
 import { sql } from './connect';
 

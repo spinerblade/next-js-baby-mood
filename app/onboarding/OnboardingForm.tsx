@@ -84,3 +84,29 @@ export default function OnboardingForm() {
     </div>
   );
 }
+{
+  /* <label>
+          First Name
+          <input
+            name="firstName"
+            placeholder="Enter First Name"
+            required
+            value={firstName}
+            onChange={(event) => {
+              setFirstName(event.target.value);
+            }}
+          />
+        </label>
+        <label>
+          Last Name
+          <input
+            name="lastName"
+            placeholder="Enter Last Name"
+            required
+            value={lastName}
+            onChange={(event) => {
+              setLastName(event.target.value);
+            }}
+          />
+        </label> */
+}

@@ -1,5 +1,5 @@
 import type { Sql } from 'postgres';
-import type { MoodType } from './00008-createTableMoodTypes';
+import type { MoodType } from './00005-createTableMoodTypes';
 
 export const moodTypes: MoodType[] = [
   { id: 1, name: 'positive' },

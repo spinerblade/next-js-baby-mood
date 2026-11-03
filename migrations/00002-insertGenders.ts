@@ -1,5 +1,5 @@
 import type { Sql } from 'postgres';
-import type { Gender } from './00002-createTableGenders';
+import type { Gender } from './00001-createTableGenders';
 
 export const genders: Gender[] = [
   { id: 1, type: 'male' },
