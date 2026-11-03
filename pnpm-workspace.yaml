@@ -1,5 +1,6 @@
 allowBuilds:
   '@parcel/watcher': true
+  bcrypt: true
   sharp: false
   unrs-resolver: false
 # Prevents installation of packages newer than 7 days

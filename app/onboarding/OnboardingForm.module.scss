@@ -1,0 +1,39 @@
+.container {
+  background-color: bisque;
+  button {
+    background-color: grey;
+  }
+}
+
+.partnerForm {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 2rem;
+  margin-bottom: 8rem;
+  input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    background-color: white;
+    &:focus {
+      outline: none;
+      border-color: blue;
+    }
+  }
+}
+
+.babyForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  justify-items: center;
+  input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    background-color: white;
+    &:focus {
+      outline: none;
+      border-color: blue;
+    }
+  }
+}
