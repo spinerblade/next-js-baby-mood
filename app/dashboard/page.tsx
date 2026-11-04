@@ -1,3 +1,6 @@
+import { getValidSession } from '@/database/sessions';
+import { getCookie } from '@/util/cookies';
+import { redirect } from 'next/navigation';
 import styles from './dashboard.module.scss';
 import MainInterface from './MainInterface';
 import Sidebar from './Sidebar';
@@ -7,7 +10,13 @@ export const metadata = {
   description: 'The dashboard where the user sees all.',
 };
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const sessionToken = await getCookie('sessionToken');
+  const session = !!sessionToken && (await getValidSession(sessionToken));
+
+  if (!session) {
+    redirect('/login?returnTo=/dashboard');
+  }
   return (
     <div className={styles.dashboardContainer}>
       <Sidebar />

@@ -1,15 +1,19 @@
+import { randomBytes } from 'node:crypto';
+import { createSessionInsecure } from '@/database/sessions';
 import { createUserInsecure, getUserInsecure } from '@/database/users';
 import {
   type User,
   userSchemaSignUp,
 } from '@/migrations/00000-createTableUsers';
+import { secureCookieOptions } from '@/util/cookies';
 import { getCombinedErrorMessage } from '@/util/validation';
 import bcrypt from 'bcrypt';
+import { cookies } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export type SignUpResponseBodyPost =
   | {
-      user: User;
+      user: Pick<User, 'id' | 'username' | 'email'>;
     }
   | {
       error: string;
@@ -46,6 +50,7 @@ export async function POST(
   const user = await createUserInsecure(
     result.data.user.username,
     passwordHash,
+    result.data.user.email,
   );
 
   if (!user) {
@@ -56,6 +61,24 @@ export async function POST(
       { status: 500 },
     );
   }
+
+  const sessionToken = randomBytes(100).toString('base64');
+  const session = await createSessionInsecure(sessionToken, user.id);
+
+  if (!session) {
+    return NextResponse.json(
+      {
+        error: 'Session creation failed',
+      },
+      { status: 500 },
+    );
+  }
+
+  (await cookies()).set({
+    name: 'sessionToken',
+    value: session.token,
+    ...secureCookieOptions,
+  });
 
   return NextResponse.json(
     {

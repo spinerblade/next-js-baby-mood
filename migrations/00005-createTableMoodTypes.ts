@@ -8,8 +8,8 @@ export type MoodType = {
 export async function up(sql: Sql) {
   await sql`
     CREATE TABLE mood_types(
-      "id" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      "name" VARCHAR(255) NOT NULL
+      id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      name VARCHAR(255) NOT NULL
     );
   `;
 }
