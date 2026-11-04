@@ -10,7 +10,7 @@ export default function Sidebar() {
         <h3>My Baby</h3>
         <dl>
           <dt>Baby Name</dt>
-          <dd>{newBaby.name}</dd>
+          <dd>babyName</dd>
           <dt>Birth Date</dt>
           <dd>birthDate</dd>
           <dt>Weight</dt>

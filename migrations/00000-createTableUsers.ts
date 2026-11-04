@@ -40,9 +40,9 @@ export async function up(sql: Sql) {
 CREATE TABLE users(
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     username VARCHAR(255) NOT NULL UNIQUE,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    birth_date DATE NOT NULL,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    birth_date DATE,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),

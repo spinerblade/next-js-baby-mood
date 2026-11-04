@@ -22,7 +22,7 @@ export function SignUpForm(props: Props) {
       onSubmit={async (event) => {
         event.preventDefault();
 
-        const response = await fetch('/api/register', {
+        const response = await fetch('/api/signUp', {
           method: 'POST',
           body: JSON.stringify({
             user: {

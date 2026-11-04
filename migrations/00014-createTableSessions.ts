@@ -1,18 +1,19 @@
 import type { Sql } from 'postgres';
+import type { User } from './00000-createTableUsers';
 
 export type Session = {
   id: number;
   token: string;
   expiryTimestamp: Date;
-  userId: number;
+  userId: User['id'];
 };
 
 export async function up(sql: Sql) {
   await sql`
     CREATE TABLE sessions(
       id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      token VARCHAR(255) NOT NULL UNIQUE,
-      expiry_timestamp TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT now() + interval '24 hours',
+      token VARCHAR(200) NOT NULL UNIQUE,
+      expiry_timestamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now() + interval '24 hours',
       user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE
     );
   `;

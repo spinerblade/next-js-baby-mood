@@ -1,9 +1,26 @@
 import type { User } from '@/migrations/00000-createTableUsers';
+import type { Session } from '@/migrations/00014-createTableSessions';
 import { cache } from 'react';
 import { sql } from './connect';
 
+export const getUser = cache(async (sessionToken: Session['token']) => {
+  const [user] = await sql<Pick<User, 'id' | 'username'>[]>`
+    SELECT
+    users.id,
+    users.username
+    FROM
+      users
+      INNER JOIN sessions ON (
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND users.id = sessions.user_id
+      )
+  `;
+  return user;
+});
+
 export const getUserInsecure = cache(async (username: User['username']) => {
-  const [user] = await sql<User[]>`
+  const [user] = await sql<Pick<User, 'id' | 'username'>[]>`
   SELECT
   id,
   username
@@ -17,12 +34,14 @@ export const getUserInsecure = cache(async (username: User['username']) => {
 
 export const getUserWithPasswordHashInsecure = cache(
   async (username: User['username']) => {
-    type UserWithPasswordHash = User & { passwordHash: string };
+    type UserWithPasswordHash = Pick<User, 'id' | 'username'> & {
+      passwordHash: string;
+    };
 
     const [user] = await sql<UserWithPasswordHash[]>`
   SELECT
   id,
-  username
+  username,
   password_hash
   FROM
   users
@@ -34,14 +53,15 @@ export const getUserWithPasswordHashInsecure = cache(
 );
 
 export const createUserInsecure = cache(
-  async (username: User['username'], passwordHash: string) => {
-    const [user] = await sql<User[]>`
+  async (username: User['username'], passwordHash: string, email: string) => {
+    const [user] = await sql<Pick<User, 'id' | 'username' | 'email'>[]>`
     INSERT INTO
-    users (username, password_hash)
+    users (username, password_hash, email)
     VALUES
     (
       ${username.toLowerCase()},
-      ${passwordHash}
+      ${passwordHash},
+      ${email}
     )
     RETURNING
     id,

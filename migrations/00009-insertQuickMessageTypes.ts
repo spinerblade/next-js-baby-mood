@@ -1,5 +1,5 @@
 import type { Sql } from 'postgres';
-import type { QuickMessageType } from './00009-createTableQuickMessageTypes';
+import type { QuickMessageType } from './00008-createTableQuickMessageTypes';
 
 export const quickMessageTypes: QuickMessageType[] = [
   { id: 1, name: 'greeting' },

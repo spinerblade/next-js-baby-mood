@@ -13,13 +13,13 @@ export type Mood = {
 export async function up(sql: Sql) {
   await sql`
     CREATE TABLE moods(
-      "id" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      "user_id" INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-      "mood_type_id" INTEGER NOT NULL REFERENCES mood_types (id),
-      "mood" VARCHAR(255) NOT NULL,
-      "emoji" VARCHAR(255) NOT NULL,
-      "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-      "updated_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now()
+      id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+      mood_type_id INTEGER NOT NULL REFERENCES mood_types (id),
+      mood VARCHAR(255) NOT NULL,
+      emoji VARCHAR(255) NOT NULL,
+      created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
+      updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now()
     );
   `;
 }

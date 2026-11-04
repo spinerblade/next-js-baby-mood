@@ -8,8 +8,8 @@ export type Gender = {
 export async function up(sql: Sql) {
   await sql`
     CREATE TABLE genders(
-      "id" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      "type" VARCHAR(255) NOT NULL UNIQUE
+      id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      type VARCHAR(255) NOT NULL UNIQUE
     );
   `;
 }
