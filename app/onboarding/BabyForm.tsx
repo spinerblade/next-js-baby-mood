@@ -52,6 +52,7 @@ export default function BabyForm() {
             setBabyGenderId('');
             setBabyWeight('');
             setBabyHeight('');
+            router.refresh();
           }}
         >
           <h3>Your Baby</h3>

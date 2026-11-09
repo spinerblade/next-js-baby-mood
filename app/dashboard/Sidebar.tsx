@@ -16,7 +16,7 @@ export default function Sidebar(props: Props) {
       <section className={styles.babySection}>
         <ul>
           {props.babies.map((baby) => (
-            <li key={`baby-${baby.id}`}>
+            <li key={baby.id}>
               <Link href={`/dashboard/${baby.id}`}>{baby.name}</Link>
             </li>
           ))}
