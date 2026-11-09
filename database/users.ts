@@ -71,3 +71,20 @@ export const createUserInsecure = cache(
     return user;
   },
 );
+
+export const getUserExistsInsecure = cache(
+  async (username: User['username']) => {
+    const [record] = await sql<{ exists: boolean }[]>`
+  SELECT
+  EXISTS (
+    SELECT
+    1
+    FROM
+    users
+    WHERE
+    users.username = ${username}
+  )
+  `;
+    return !!record?.exists;
+  },
+);

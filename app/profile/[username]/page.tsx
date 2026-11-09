@@ -1,5 +1,6 @@
 import { getUser } from '@/database/users';
 import { getCookie } from '@/util/cookies';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export const metadata = {
@@ -24,6 +25,8 @@ export default async function ProfilePage(
     <>
       <h1>Profile</h1>
       <h2>{username}</h2>
+      <h3>Setup</h3>
+      <Link href="/onboarding">Click here</Link>
     </>
   );
 }

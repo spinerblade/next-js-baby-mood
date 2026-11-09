@@ -1,4 +1,5 @@
 import type { Sql } from 'postgres';
+import z from 'zod';
 
 export type ParentConnection = {
   id: number;
@@ -8,6 +9,19 @@ export type ParentConnection = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export const partnerSchemaSearch = z.object({
+  partnerUsername: z
+    .string({ error: 'Please enter a string only' })
+    .trim()
+    .min(3, { error: 'Username must be minimum 3 characters' })
+    .max(20, { error: 'Username must be maximum 20 characters' }),
+});
+
+export const parentConnectionIdSchema = z.coerce
+  .number({ error: 'Invalid request id' })
+  .int({ error: 'Invalid request id' })
+  .positive({ error: 'Invalid request id' });
 
 export async function up(sql: Sql) {
   await sql`

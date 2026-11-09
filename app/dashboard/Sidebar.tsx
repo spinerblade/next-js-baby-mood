@@ -1,8 +1,6 @@
-import { getBabyData } from '@/database/babies';
 import styles from './Sidebar.module.scss';
 
 export default function Sidebar() {
-  const newBaby = getBabyData(1);
   return (
     <aside className={styles.sidebar}>
       <h2>Placeholder for Sidebar</h2>

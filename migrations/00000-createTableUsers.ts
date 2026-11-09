@@ -47,7 +47,7 @@ CREATE TABLE users(
     email VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
     updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-    profile_picture_link VARCHAR(255) NULL
+    profile_picture_url VARCHAR(255) NULL
 );
 
   `;

@@ -21,19 +21,3 @@
     }
   }
 }
-
-.babyForm {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  justify-items: center;
-  input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    background-color: white;
-    &:focus {
-      outline: none;
-      border-color: blue;
-    }
-  }
-}
