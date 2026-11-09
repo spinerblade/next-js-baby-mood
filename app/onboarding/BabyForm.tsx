@@ -1,6 +1,9 @@
 'use client';
 
+import ErrorMessage from '@/ErrorMessage';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import type { CreateBabyResponseBodyPost } from '../api/babies/route';
 import styles from './BabyForm.module.scss';
 
 export default function BabyForm() {
@@ -8,12 +11,49 @@ export default function BabyForm() {
   const [babyBirthDate, setBabyBirthDate] = useState('');
   const [babyWeight, setBabyWeight] = useState('');
   const [babyHeight, setBabyHeight] = useState('');
+  const [babyGenderId, setBabyGenderId] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const router = useRouter();
 
   return (
     <div className={styles.container}>
       <section className={styles.babyForm}>
         <h2>Set up your Baby's Information</h2>
-        <form>
+        <form
+          onSubmit={async (event) => {
+            event.preventDefault();
+            const response = await fetch('/api/babies', {
+              method: 'POST',
+              body: JSON.stringify({
+                baby: {
+                  name: babyName,
+                  birthDate: babyBirthDate,
+                  weight: babyWeight,
+                  height: babyHeight,
+                  genderId: babyGenderId,
+                },
+              }),
+            });
+
+            const responseBody =
+              (await response.json()) as CreateBabyResponseBodyPost;
+
+            if ('error' in responseBody) {
+              setSuccessMessage('');
+              setErrorMessage(responseBody.error);
+              return;
+            }
+            setErrorMessage('');
+            setSuccessMessage(`${responseBody.baby.name} was added!`);
+            setBabyName('');
+            setBabyBirthDate('');
+            setBabyGenderId('');
+            setBabyWeight('');
+            setBabyHeight('');
+          }}
+        >
           <h3>Your Baby</h3>
           <label>
             Baby's Name
@@ -26,6 +66,23 @@ export default function BabyForm() {
                 setBabyName(event.currentTarget.value);
               }}
             />
+          </label>
+          <label>
+            Baby's Gender
+            <select
+              name="babyGenderId"
+
+              required
+              value={babyGenderId}
+              onChange={(event) => {
+                setBabyGenderId(event.currentTarget.value);
+              }}
+            >
+              <option value="">Choose a gender</option>
+              <option value="1">Male</option>
+              <option value="2">Female</option>
+              <option value="3">Other</option>
+            </select>
           </label>
           <label>
             Baby's Birthdate
@@ -44,7 +101,8 @@ export default function BabyForm() {
             Baby's current weight
             <input
               name="babyWeight"
-              placeholder="Enter your baby's weight"
+              type="number"
+              placeholder="Weight in grams"
               required
               value={babyWeight}
               onChange={(event) => {
@@ -56,7 +114,8 @@ export default function BabyForm() {
             Baby's current height
             <input
               name="babyHeight"
-              placeholder="Enter your baby's height"
+              type="number"
+              placeholder="Height in centimeter"
               required
               value={babyHeight}
               onChange={(event) => {
@@ -65,6 +124,15 @@ export default function BabyForm() {
             />
           </label>
           <button>Submit</button>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
+          {!!successMessage && (
+            <>
+              <p>{successMessage}</p>
+              <button type="button" onClick={() => router.push('/dashboard')}>
+                Go to dashboard
+              </button>
+            </>
+          )}
         </form>
       </section>
     </div>

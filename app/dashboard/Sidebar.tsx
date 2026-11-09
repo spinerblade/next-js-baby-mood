@@ -1,28 +1,43 @@
+import type { Partner } from '@/database/parentConnection';
+import type { Baby } from '@/migrations/00004-createTableBabies';
+import Link from 'next/link';
 import styles from './Sidebar.module.scss';
 
-export default function Sidebar() {
+type Props = {
+  baby: Baby;
+  babies: Baby[];
+  partner: Partner | undefined;
+};
+
+export default function Sidebar(props: Props) {
   return (
     <aside className={styles.sidebar}>
       <h2>Placeholder for Sidebar</h2>
       <section className={styles.babySection}>
+        <ul>
+          {props.babies.map((baby) => (
+            <li key={`baby-${baby.id}`}>
+              <Link href={`/dashboard/${baby.id}`}>{baby.name}</Link>
+            </li>
+          ))}
+        </ul>
         <h3>My Baby</h3>
         <dl>
           <dt>Baby Name</dt>
-          <dd>babyName</dd>
+          <dd>{props.baby.name}</dd>
           <dt>Birth Date</dt>
-          <dd>birthDate</dd>
+          <dd>{props.baby.birthDate.toLocaleDateString()}</dd>
           <dt>Weight</dt>
-          <dd>weight</dd>
+          <dd>{props.baby.weight}</dd>
           <dt>Height</dt>
-          <dd>height</dd>
+          <dd>{props.baby.height}</dd>
           <dt>Mood</dt>
           <dd>currentMood</dd>
         </dl>
       </section>
       <section className={styles.partnerSection}>
         <h3>My Partner</h3>
-        <p>partnerName</p>
-        <p>urgentTask</p>
+        <p>{props.partner ? props.partner.username : 'No partner connected'}</p>
       </section>
       <section className={styles.messageSection}>
         <h3>My Quick Messages</h3>

@@ -145,6 +145,36 @@ parent_connections.updated_at
   },
 );
 
+export type Partner = Pick<User, 'id' | 'username'>;
+
+export const getPartner = cache(async (sessionToken: Session['token']) => {
+  const [partner] = await sql<Partner[]>`
+    SELECT
+    users.id,
+    users.username
+    FROM
+    parent_connections
+    INNER JOIN sessions ON (
+      sessions.token = ${sessionToken}
+      AND sessions.expiry_timestamp > now()
+      AND (
+        parent_connections.user_one_id = sessions.user_id
+      OR  parent_connections.user_two_id = sessions.user_id
+      )
+    )
+    INNER JOIN users ON (
+        users.id IN (
+          parent_connections.user_one_id,
+          parent_connections.user_two_id
+        )
+        AND users.id != sessions.user_id
+      )
+    WHERE
+      parent_connections.status = true
+  `;
+  return partner;
+});
+
 export const getParentConnectionInsecure = cache(
   async (userOneId: User['id'], userTwoId: User['id']) => {
     const [connection] = await sql<ParentConnection[]>`

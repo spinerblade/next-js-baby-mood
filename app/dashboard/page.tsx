@@ -1,9 +1,7 @@
+import { getBabies } from '@/database/babies';
 import { getValidSession } from '@/database/sessions';
 import { getCookie } from '@/util/cookies';
 import { redirect } from 'next/navigation';
-import styles from './dashboard.module.scss';
-import MainInterface from './MainInterface';
-import Sidebar from './Sidebar';
 
 export const metadata = {
   title: 'Dashboard',
@@ -17,13 +15,10 @@ export default async function DashboardPage() {
   if (!session) {
     redirect('/login?returnTo=/dashboard');
   }
-  return (
-    <div className={styles.dashboardContainer}>
-      <Sidebar />
-      <main className={styles.mainContent}>
-        <h1>Dashboard</h1>
-        <MainInterface />
-      </main>
-    </div>
-  );
+
+  const babies = await getBabies(sessionToken);
+  if (babies.length === 0) {
+    redirect('/onboarding');
+  }
+  redirect(`/dashboard/${babies[0]?.id}`);
 }
