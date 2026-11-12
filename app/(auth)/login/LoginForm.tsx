@@ -64,7 +64,7 @@ export default function LoginForm(props: Props) {
           Password
           <input
             type="password"
-            autoComplete="password"
+
             placeholder="Enter Password"
             required
             value={password}

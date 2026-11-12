@@ -1,21 +1,36 @@
 'use server';
 
-import { getUserData } from '@/database/users';
+import { getUser, getUserInsecure } from '@/database/users';
+import { partnerSchemaSearch } from '@/migrations/00003-createTableParentConnections';
+import { getCookie } from '@/util/cookies';
+import { redirect } from 'next/navigation';
 
 export async function partnerFormHandler(
-  prevState: { message: string },
+  prevState: { partnerUsername?: string; message?: string },
   formData: FormData,
 ) {
-  const username = formData.get('partnerUsername');
-  if (typeof username !== 'string') {
-    return { message: 'Please enter a username.' };
+  const sessionToken = await getCookie('sessionToken');
+  const currentUser = sessionToken && (await getUser(sessionToken));
+  if (!currentUser) {
+    redirect('/login?returnTo=/onboarding');
   }
-  const checkPartner = await getUserData(username);
-  if (!checkPartner) {
-    return { message: 'Your partner was not found.' };
-  } else {
-    return { message: 'Your partner exists and is already signed up.' };
-  }
-}
 
-export async function babyFormHandler() {}
+  const result = partnerSchemaSearch.safeParse({
+    partnerUsername: formData.get('partnerUsername'),
+  });
+  if (!result.success) {
+    return { message: result.error.issues[0]?.message };
+  }
+  const partnerUsername = result.data.partnerUsername;
+
+  const partner = await getUserInsecure(partnerUsername);
+  if (!partner) return { message: 'Your partner was not found.' };
+  if (partner.id === currentUser.id) {
+    return { message: 'You can not connect to yourself.' };
+  }
+
+  return {
+    partnerUsername: partner.username,
+    message: `${partnerUsername} exists and is already signed up. Want to send a request to connect?`,
+  };
+}

@@ -41,7 +41,9 @@ export function SignUpForm(props: Props) {
         }
         setErrorMessage('');
 
-        router.push(getSafeReturnToPath(props.returnTo) || '/dashboard');
+        router.push(getSafeReturnToPath(props.returnTo) || '/onboarding');
+
+        router.refresh();
       }}
     >
       <div className={styles.container}>

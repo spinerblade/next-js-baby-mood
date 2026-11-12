@@ -24,7 +24,9 @@ export default async function Header() {
               <li>
                 <Link href="/dashboard">BabyDashboard</Link>
               </li>
-              <li>BabyMood/Chat</li>
+              <li>
+                <Link href="/chat">BabyMood/Chat</Link>
+              </li>
               <li>
                 <Link href="/achievements">Achievements/Timeline</Link>
               </li>
