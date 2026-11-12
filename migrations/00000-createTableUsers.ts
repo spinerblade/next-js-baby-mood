@@ -4,13 +4,13 @@ import z, { email } from 'zod';
 export type User = {
   id: number;
   username: string;
-  firstName: string;
-  lastName: string;
-  birthDate: Date;
+  firstName: string | null;
+  lastName: string | null;
+  birthDate: Date | null;
   email: string;
   createdAt: Date;
   updatedAt: Date;
-  profilePictureLink: string | null;
+  profilePictureUrl: string | null;
 };
 
 export const userSchemaSignUp = z.object({
@@ -36,25 +36,21 @@ export const userSchemaLogin = z.object({
 
 export async function up(sql: Sql) {
   await sql`
-
-CREATE TABLE users(
-    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
-    birth_date DATE,
-    password_hash VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-    updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-    profile_picture_url VARCHAR(255) NULL
-);
-
+    CREATE TABLE users (
+      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      username varchar(255) NOT NULL UNIQUE,
+      first_name varchar(255),
+      last_name varchar(255),
+      birth_date date,
+      password_hash varchar(255) NOT NULL,
+      email varchar(255) NOT NULL UNIQUE,
+      created_at timestamp(0) without time zone NOT NULL DEFAULT now(),
+      updated_at timestamp(0) without time zone NOT NULL DEFAULT now(),
+      profile_picture_url varchar(255) NULL
+    );
   `;
 }
 
 export async function down(sql: Sql) {
-  await sql`
-  DROP TABLE users
-  `;
+  await sql` DROP TABLE users `;
 }

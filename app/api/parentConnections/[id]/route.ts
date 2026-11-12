@@ -1,3 +1,4 @@
+import { createConversationInsecure } from '@/database/conversations';
 import {
   acceptParentConnectionRequest,
   declineParentConnectionRequest,
@@ -46,6 +47,8 @@ export async function PUT(
   if (!connection) {
     return NextResponse.json({ error: 'Request not found' }, { status: 404 });
   }
+
+  await createConversationInsecure(connection.id);
   return NextResponse.json({ connection: connection }, { status: 200 });
 }
 

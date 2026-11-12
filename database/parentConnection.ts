@@ -10,26 +10,29 @@ export const createParentConnectionRequest = cache(
     userTwoId: ParentConnection['userTwoId'],
   ) => {
     const [parentConnectionRequest] = await sql<ParentConnection[]>`
-  INSERT INTO
-  parent_connections (user_one_id, user_two_id, status)
-  SELECT
-  sessions.user_id,
-  ${userTwoId},
-  false
-  FROM
-  sessions
-  WHERE
-  sessions.token = ${sessionToken}
-  AND sessions.expiry_timestamp > now()
-  RETURNING
-id,
-  user_one_id,
-  user_two_id,
-  status,
-  created_at,
-  updated_at
-
-  `;
+      INSERT INTO
+        parent_connections (
+          user_one_id,
+          user_two_id,
+          status
+        )
+      SELECT
+        sessions.user_id,
+        ${userTwoId},
+        FALSE
+      FROM
+        sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+      RETURNING
+        id,
+        user_one_id,
+        user_two_id,
+        status,
+        created_at,
+        updated_at
+    `;
     return parentConnectionRequest;
   },
 );
@@ -40,22 +43,22 @@ export type ParentConnectionRequest = Pick<ParentConnection, 'id'> &
 export const getParentConnectionRequests = cache(
   async (sessionToken: Session['token']) => {
     const parentConnectionRequests = await sql<ParentConnectionRequest[]>`
-    SELECT
-    parent_connections.id,
-    users.username
-    FROM
-    parent_connections
-    INNER JOIN sessions ON (
-      sessions.token = ${sessionToken}
-      AND sessions.expiry_timestamp > now()
-      AND parent_connections.user_two_id = sessions.user_id)
-    INNER JOIN users ON (
-      users.id = parent_connections.user_one_id)
-    WHERE
-     parent_connections.status = false
-
-
-  `;
+      SELECT
+        parent_connections.id,
+        users.username
+      FROM
+        parent_connections
+        INNER JOIN sessions ON (
+          sessions.token = ${sessionToken}
+          AND sessions.expiry_timestamp > now()
+          AND parent_connections.user_two_id = sessions.user_id
+        )
+        INNER JOIN users ON (
+          users.id = parent_connections.user_one_id
+        )
+      WHERE
+        parent_connections.status = FALSE
+    `;
     return parentConnectionRequests;
   },
 );
@@ -66,27 +69,26 @@ export const acceptParentConnectionRequest = cache(
     connectionId: ParentConnection['id'],
   ) => {
     const [connection] = await sql<ParentConnection[]>`
-  UPDATE
-  parent_connections
-  SET
-  status = true,
-  updated_at = now()
-  FROM
-  sessions
-  WHERE
-  sessions.token = ${sessionToken}
-      AND sessions.expiry_timestamp > now()
-      AND parent_connections.user_two_id = sessions.user_id
-      AND parent_connections.status = false
-      AND parent_connections.id = ${connectionId}
-RETURNING
-parent_connections.id,
-parent_connections.user_one_id,
-parent_connections.user_two_id,
-parent_connections.status,
-parent_connections.created_at,
-parent_connections.updated_at
-  `;
+      UPDATE parent_connections
+      SET
+        status = TRUE,
+        updated_at = now()
+      FROM
+        sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND parent_connections.user_two_id = sessions.user_id
+        AND parent_connections.status = FALSE
+        AND parent_connections.id = ${connectionId}
+      RETURNING
+        parent_connections.id,
+        parent_connections.user_one_id,
+        parent_connections.user_two_id,
+        parent_connections.status,
+        parent_connections.created_at,
+        parent_connections.updated_at
+    `;
     return connection;
   },
 );
@@ -97,22 +99,21 @@ export const declineParentConnectionRequest = cache(
     connectionId: ParentConnection['id'],
   ) => {
     const [connection] = await sql<ParentConnection[]>`
-  DELETE FROM
-  parent_connections USING sessions
-  WHERE
-  sessions.token = ${sessionToken}
-      AND sessions.expiry_timestamp > now()
-      AND parent_connections.user_two_id = sessions.user_id
-      AND parent_connections.status = false
-      AND parent_connections.id = ${connectionId}
-RETURNING
-parent_connections.id,
-parent_connections.user_one_id,
-parent_connections.user_two_id,
-parent_connections.status,
-parent_connections.created_at,
-parent_connections.updated_at
-  `;
+      DELETE FROM parent_connections USING sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND parent_connections.user_two_id = sessions.user_id
+        AND parent_connections.status = FALSE
+        AND parent_connections.id = ${connectionId}
+      RETURNING
+        parent_connections.id,
+        parent_connections.user_one_id,
+        parent_connections.user_two_id,
+        parent_connections.status,
+        parent_connections.created_at,
+        parent_connections.updated_at
+    `;
     return connection;
   },
 );
@@ -120,49 +121,54 @@ parent_connections.updated_at
 export const getAcceptedParentConnection = cache(
   async (sessionToken: Session['token']) => {
     const [connection] = await sql<ParentConnection[]>`
-  SELECT
-parent_connections.id,
-parent_connections.user_one_id,
-parent_connections.user_two_id,
-parent_connections.status,
-parent_connections.created_at,
-parent_connections.updated_at
-  FROM
-  parent_connections
-  INNER JOIN sessions ON (
-    sessions.token = ${sessionToken}
-    AND
-    sessions.expiry_timestamp > now()
-    AND
-    (parent_connections.user_one_id = sessions.user_id
-    OR
-    parent_connections.user_two_id = sessions.user_id)
-  )
-  WHERE
-  parent_connections.status = true
-  `;
+      SELECT
+        parent_connections.id,
+        parent_connections.user_one_id,
+        parent_connections.user_two_id,
+        parent_connections.status,
+        parent_connections.created_at,
+        parent_connections.updated_at
+      FROM
+        parent_connections
+        INNER JOIN sessions ON (
+          sessions.token = ${sessionToken}
+          AND sessions.expiry_timestamp > now()
+          AND (
+            parent_connections.user_one_id = sessions.user_id
+            OR parent_connections.user_two_id = sessions.user_id
+          )
+        )
+      WHERE
+        parent_connections.status = TRUE
+    `;
     return connection;
   },
 );
-
-export type Partner = Pick<User, 'id' | 'username'>;
+export type Partner = {
+  id: number;
+  username: string;
+  firstName: string | null;
+  lastName: string | null;
+};
 
 export const getPartner = cache(async (sessionToken: Session['token']) => {
   const [partner] = await sql<Partner[]>`
     SELECT
-    users.id,
-    users.username
+      users.id,
+      users.username,
+      users.first_name,
+      users.last_name
     FROM
-    parent_connections
-    INNER JOIN sessions ON (
-      sessions.token = ${sessionToken}
-      AND sessions.expiry_timestamp > now()
-      AND (
-        parent_connections.user_one_id = sessions.user_id
-      OR  parent_connections.user_two_id = sessions.user_id
+      parent_connections
+      INNER JOIN sessions ON (
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND (
+          parent_connections.user_one_id = sessions.user_id
+          OR parent_connections.user_two_id = sessions.user_id
+        )
       )
-    )
-    INNER JOIN users ON (
+      INNER JOIN users ON (
         users.id IN (
           parent_connections.user_one_id,
           parent_connections.user_two_id
@@ -170,7 +176,7 @@ export const getPartner = cache(async (sessionToken: Session['token']) => {
         AND users.id != sessions.user_id
       )
     WHERE
-      parent_connections.status = true
+      parent_connections.status = TRUE
   `;
   return partner;
 });
@@ -178,23 +184,20 @@ export const getPartner = cache(async (sessionToken: Session['token']) => {
 export const getParentConnectionInsecure = cache(
   async (userOneId: User['id'], userTwoId: User['id']) => {
     const [connection] = await sql<ParentConnection[]>`
-     SELECT
-      id,
-      user_one_id,
-      user_two_id,
-      status,
-      created_at,
-      updated_at
-     FROM
-      parent_connections
+      SELECT
+        id,
+        user_one_id,
+        user_two_id,
+        status,
+        created_at,
+        updated_at
+      FROM
+        parent_connections
       WHERE
-     user_one_id = ${userOneId}
-      AND
-     user_two_id = ${userTwoId}
-      OR
-     user_one_id = ${userTwoId}
-      AND
-     user_two_id = ${userOneId}
+        user_one_id = ${userOneId}
+        AND user_two_id = ${userTwoId}
+        OR user_one_id = ${userTwoId}
+        AND user_two_id = ${userOneId}
     `;
     return connection;
   },
@@ -213,7 +216,7 @@ export const getAcceptedParentConnectionInsecure = cache(
       FROM
         parent_connections
       WHERE
-        status = true
+        status = TRUE
         AND (
           user_one_id = ${userId}
           OR user_two_id = ${userId}
