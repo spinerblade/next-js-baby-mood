@@ -4,7 +4,7 @@ import styles from './MainInterface.module.scss';
 export default function MainInterface() {
   return (
     <section className={styles.mainInterface}>
-      <h2>Placeholder Main Interface</h2>
+      <h2>Main Interface</h2>
       <Image
         src="/images/baby_profile_picture_placeholder.webp"
         alt="profile picture baby"

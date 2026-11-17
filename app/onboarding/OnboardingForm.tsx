@@ -20,7 +20,7 @@ export default function OnboardingForm() {
       <section className={styles.partnerForm}>
         <h2>Connect to your Partner</h2>
         <form action={formAction}>
-          <h3>Check if Partner is already sign up</h3>
+          <h3>Check if Partner is already signed up</h3>
           <label>
             Partner Username
             <input
@@ -33,7 +33,7 @@ export default function OnboardingForm() {
               }}
             />
           </label>
-          <button>Submit</button>
+          <button>Search</button>
           <p>{state.message}</p>
         </form>
         {!!state.partnerUsername && (

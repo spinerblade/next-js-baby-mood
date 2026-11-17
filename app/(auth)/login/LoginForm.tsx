@@ -4,7 +4,7 @@ import { getSafeReturnToPath } from '@/util/validation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { LoginResponseBodyPost } from '../api/login/route';
-import styles from './login.module.scss';
+import styles from '../authForm.module.scss';
 
 type Props = {
   returnTo: string | string[] | undefined;

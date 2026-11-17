@@ -22,6 +22,9 @@ export default async function SignUpPage(props: PageProps<'/signUp'>) {
     <>
       <h1 className="p-8 text-4xl">Create an Account</h1>
       <SignUpForm returnTo={searchParams.returnTo} />
+      <Link href="/login">
+        <p>Already got an account? Login here!</p>
+      </Link>
     </>
   );
 }
