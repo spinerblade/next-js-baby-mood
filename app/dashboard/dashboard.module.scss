@@ -1,12 +1,9 @@
 .dashboardContainer {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  min-height: 100vh;
+  grid-template-columns: 16rem 1fr;
+  flex: 1;
 }
 
 .mainContent {
-  padding: 30px;
-  color: rgb(48, 123, 180);
-  background-color: whitesmoke;
-  font: var(--font-geist-sans);
+  padding: 2rem;
 }

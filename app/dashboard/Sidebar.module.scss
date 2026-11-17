@@ -1,23 +1,17 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
-  padding: 20px;
-  gap: 4rem;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  align-self: start;
+  gap: 1.5rem;
+  padding: 1rem;
+  border-right: 1px solid var(--color-primary);
 }
 
-.babySection {
-  background-color: lightblue;
+.section {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--color-surface);
 }
 
-.partnerSection {
-  background-color: lightblue;
-}
-
-.messageSection {
-  background-color: lightblue;
+.section dt {
+  font-weight: 600;
 }

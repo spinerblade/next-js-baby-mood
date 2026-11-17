@@ -1,10 +1,68 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-bg: #e1eacd;
+  --color-surface: #bad8b6;
+  --color-surface-input: #ffffff;
+  --color-primary: #61b390;
+  --color-primary-hover: #4a9a78;
+  --color-text: #01352c;
+  --color-error: #c0392b;
+  --color-text-inverse: #ffffff;
+}
+
 body {
-  font-family: sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   min-height: 100vh;
 }
 
-footer {
-  margin-top: auto;
+@layer base {
+  input,
+  textarea,
+  select {
+    padding: 0.5rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.5rem;
+    background-color: var(--color-surface-input);
+    color: inherit;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: 2px solid var(--color-primary-hover);
+    outline-offset: 1px;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  h1 {
+    font-size: 2rem; /* biggest, e.g. 2rem */
+    font-weight: 700; /* bold = 700 */
+    margin-bottom: 1rem; /* space below, e.g. 1rem */
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
 }

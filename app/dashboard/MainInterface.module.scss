@@ -1,15 +1,20 @@
 .mainInterface {
-  font-weight: 900;
-  background-color: bisque;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .chat {
-  background-color: lightgray;
-  width: 32rem;
-  height: 12rem;
-  font-size: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 32rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--color-surface);
+}
 
-  textarea {
-    background-color: white;
-  }
+.chat textarea {
+  min-height: 6rem;
+  resize: vertical;
 }

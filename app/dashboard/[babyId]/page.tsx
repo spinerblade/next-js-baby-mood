@@ -1,4 +1,5 @@
 import { getBabies, getBaby } from '@/database/babies';
+import { getMoods } from '@/database/moods';
 import { getPartner } from '@/database/parentConnection';
 import { getValidSession } from '@/database/sessions';
 import { babyIdSchema } from '@/migrations/00004-createTableBabies';
@@ -34,9 +35,10 @@ export default async function BabyDashboardPage(
   }
   const babies = await getBabies(sessionToken);
   const partner = await getPartner(sessionToken);
+  const moods = await getMoods(sessionToken);
   return (
     <div className={styles.dashboardContainer}>
-      <Sidebar baby={baby} babies={babies} partner={partner} />
+      <Sidebar baby={baby} babies={babies} partner={partner} moods={moods} />
       <main className={styles.mainContent}>
         <h1>Dashboard</h1>
         <MainInterface />
