@@ -6,7 +6,7 @@ import { getCookie } from '@/util/cookies';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import AchievementForm from '../AchievementForm';
-import Chart from '../Chart';
+import Timeline from '../Timeline';
 
 export const metadata = {
   title: 'Achievement of your Baby',
@@ -43,15 +43,8 @@ export default async function BabyAchievementPage(
           </li>
         ))}
       </ul>
-      <Chart />
+      <Timeline achievements={achievements} />
       <AchievementForm babyId={baby.id} />
-      <ul>
-        {achievements.map((achievement) => (
-          <li key={achievement.id}>
-            {achievement.description} {achievement.date.toLocaleDateString()}
-          </li>
-        ))}
-      </ul>
     </>
   );
 }
