@@ -6,7 +6,7 @@ import styles from './Sidebar.module.scss';
 
 type Props = {
   baby: Baby;
-  babies: Baby[];
+  username: string;
   partner: Partner | undefined;
   moods: Mood[];
 };
@@ -16,18 +16,11 @@ export default function Sidebar(props: Props) {
     <aside className={styles.sidebar}>
       <h2>Sidebar</h2>
       <section className={styles.section}>
-        <ul>
-          {props.babies.map((baby) => (
-            <li key={baby.id}>
-              <Link href={`/dashboard/${baby.id}`}>{baby.name}</Link>
-            </li>
-          ))}
-        </ul>
         <h3>My Baby</h3>
         <dl>
-          <dt>Baby Name</dt>
+          <dt>Baby name</dt>
           <dd>{props.baby.name}</dd>
-          <dt>Birth Date</dt>
+          <dt>Birth date</dt>
           <dd>{props.baby.birthDate.toLocaleDateString()}</dd>
           <dt>Weight</dt>
           <dd>{props.baby.weight}</dd>
@@ -45,7 +38,8 @@ export default function Sidebar(props: Props) {
         <h3>My Quick Messages</h3>
         {props.moods.length === 0 ? (
           <p>
-            No moods yet – <Link href="/chat">create one</Link>
+            No moods yet –{' '}
+            <Link href={`/profile/${props.username}`}>create one</Link>
           </p>
         ) : (
           <ul>

@@ -1,7 +1,10 @@
-import { getBabies } from '@/database/babies';
+import { getAchievements } from '@/database/achievements';
 import { getValidSession } from '@/database/sessions';
 import { getCookie } from '@/util/cookies';
+import { getSelectedBaby } from '@/util/selectedBaby';
 import { redirect } from 'next/navigation';
+import AchievementForm from './AchievementForm';
+import Timeline from './Timeline';
 
 export const metadata = {
   title: 'Achievements',
@@ -16,9 +19,16 @@ export default async function AchievementPage() {
     redirect('/login?returnTo=/achievements');
   }
 
-  const babies = await getBabies(sessionToken);
-  if (babies.length === 0) {
+  const baby = await getSelectedBaby(sessionToken);
+  if (!baby) {
     redirect('/onboarding');
   }
-  redirect(`/achievements/${babies[0]?.id}`);
+
+  const achievements = await getAchievements(sessionToken, baby.id);
+  return (
+    <>
+      <Timeline achievements={achievements} />
+      <AchievementForm babyId={baby.id} />
+    </>
+  );
 }

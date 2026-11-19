@@ -1,0 +1,19 @@
+.babySelector {
+  appearance: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  option {
+    background-color: var(--color-surface-input);
+    color: var(--color-text);
+  }
+}

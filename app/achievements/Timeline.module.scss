@@ -1,24 +1,96 @@
 .timeline {
+  --gap: 2rem;
+  --line-width: 0.25rem;
   display: grid;
-  grid-template-columns: 1fr 0.25rem 1fr;
-  gap: 2rem;
+  grid-template-columns: 1fr var(--line-width) 1fr;
+  gap: var(--gap);
   position: relative;
+  &::before {
+    content: '';
+
+    top: 0;
+    bottom: 0;
+    width: var(--line-width);
+    background: black;
+
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes bobbing {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(10px);
+  }
 }
 
 .item {
+  padding: 1rem 1rem 1rem 4rem;
   grid-row: span 2;
-  border: solid;
-  background-color: var(--color-surface);
+  border-radius: 20px;
+  box-shadow: 0px 12px 30px hsl(0deg 0% 0% / 0.25);
+  background-color: var(--color-primary);
+  position: relative;
+  // Animation
+  animation-name: bobbing;
+  animation-duration: 3s;
+  animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  transition-property: box-shadow, translate;
+  transition-duration: 0.3s;
+
+  // Hover
+  &:hover {
+    box-shadow: 0px 12px 30px hsl(0 0% 100%);
+    translate: 0 -10px;
+  }
+  &::before {
+    position: absolute;
+    content: '';
+    width: 2rem;
+    aspect-ratio: 1;
+    background: var(--color-bg);
+    top: 50%;
+    transform: translate(50%, -50%);
+    right: calc(100% + var(--gap) + var(--line-width) / 2);
+    border: 0.3rem solid black;
+    border-radius: 50%;
+  }
 }
 
 .item:nth-child(odd) {
   grid-column: 3;
+  animation-delay: -1.5s;
 }
 
 .item:nth-child(even) {
   grid-column: 1;
+  &::before {
+    right: auto;
+    left: calc(100% + var(--gap) + var(--line-width) / 2);
+    transform: translate(-50%, -50%);
+  }
 }
 
 .item:nth-child(2) {
   grid-row: 2 / span 2;
+}
+
+.item p {
+  font-weight: 800;
+}
+
+.item time {
+  font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    animation: none;
+  }
 }

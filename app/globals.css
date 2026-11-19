@@ -11,6 +11,23 @@
   --color-text-inverse: #ffffff;
 }
 
+[data-mood='negative'] {
+  --color-bg: #f3dcd6;
+  --color-surface: #e6b5ad;
+  --color-primary: #d0706a;
+  --color-primary-hover: #b5544f;
+  --color-text: #4a0f0d;
+  --color-error: #01352c;
+}
+
+[data-mood='neutral'] {
+  --color-bg: #d9e6ee;
+  --color-surface: #b3cde0;
+  --color-primary: #6a9fc4;
+  --color-primary-hover: #4f84aa;
+  --color-text: #0d2d4a;
+}
+
 body {
   font-family: var(--font-geist-sans), sans-serif;
   background-color: var(--color-bg);

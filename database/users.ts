@@ -4,10 +4,13 @@ import { cache } from 'react';
 import { sql } from './connect';
 
 export const getUser = cache(async (sessionToken: Session['token']) => {
-  const [user] = await sql<Pick<User, 'id' | 'username'>[]>`
+  const [user] = await sql<
+    Pick<User, 'id' | 'username' | 'profilePictureUrl'>[]
+  >`
     SELECT
-    users.id,
-    users.username
+      users.id,
+      users.username,
+      users.profile_picture_url
     FROM
       users
       INNER JOIN sessions ON (
@@ -19,15 +22,34 @@ export const getUser = cache(async (sessionToken: Session['token']) => {
   return user;
 });
 
+export const updateUserProfilePicture = cache(
+  async (sessionToken: Session['token'], publicId: string) => {
+    const [user] = await sql<Pick<User, 'id'>[]>`
+      UPDATE users
+      SET
+        profile_picture_url = ${publicId}
+      FROM
+        sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND sessions.user_id = users.id
+      RETURNING
+        users.id
+    `;
+    return user;
+  },
+);
+
 export const getUserInsecure = cache(async (username: User['username']) => {
   const [user] = await sql<Pick<User, 'id' | 'username'>[]>`
-  SELECT
-  id,
-  username
-  FROM
-  users
-  WHERE
-  username = ${username.toLowerCase()}
+    SELECT
+      id,
+      username
+    FROM
+      users
+    WHERE
+      username = ${username.toLowerCase()}
   `;
   return user;
 });
@@ -39,15 +61,15 @@ export const getUserWithPasswordHashInsecure = cache(
     };
 
     const [user] = await sql<UserWithPasswordHash[]>`
-  SELECT
-  id,
-  username,
-  password_hash
-  FROM
-  users
-  WHERE
-  username = ${username.toLowerCase()}
-  `;
+      SELECT
+        id,
+        username,
+        password_hash
+      FROM
+        users
+      WHERE
+        username = ${username.toLowerCase()}
+    `;
     return user;
   },
 );
@@ -55,18 +77,22 @@ export const getUserWithPasswordHashInsecure = cache(
 export const createUserInsecure = cache(
   async (username: User['username'], passwordHash: string, email: string) => {
     const [user] = await sql<Pick<User, 'id' | 'username' | 'email'>[]>`
-    INSERT INTO
-    users (username, password_hash, email)
-    VALUES
-    (
-      ${username.toLowerCase()},
-      ${passwordHash},
-      ${email}
-    )
-    RETURNING
-    id,
-    username,
-    email
+      INSERT INTO
+        users (
+          username,
+          password_hash,
+          email
+        )
+      VALUES
+        (
+          ${username.toLowerCase()},
+          ${passwordHash},
+          ${email}
+        )
+      RETURNING
+        id,
+        username,
+        email
     `;
     return user;
   },
@@ -75,16 +101,16 @@ export const createUserInsecure = cache(
 export const getUserExistsInsecure = cache(
   async (username: User['username']) => {
     const [record] = await sql<{ exists: boolean }[]>`
-  SELECT
-  EXISTS (
-    SELECT
-    1
-    FROM
-    users
-    WHERE
-    users.username = ${username}
-  )
-  `;
+      SELECT
+        EXISTS (
+          SELECT
+            1
+          FROM
+            users
+          WHERE
+            users.username = ${username}
+        )
+    `;
     return !!record?.exists;
   },
 );

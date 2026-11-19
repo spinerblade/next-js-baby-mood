@@ -1,4 +1,5 @@
 import type { Baby } from '@/migrations/00004-createTableBabies';
+import type { MoodType } from '@/migrations/00006-createTableMoodTypes';
 import type { Mood } from '@/migrations/00007-createTableMoods';
 import type { MessageConversation } from '@/migrations/00013-createTableMessageConversations';
 import type { Session } from '@/migrations/00014-createTableSessions';
@@ -113,3 +114,42 @@ export const getMessages = cache(async (sessionToken: Session['token']) => {
   `;
   return messages;
 });
+
+export type LatestMoodType = { moodTypeName: MoodType['name'] };
+
+export const getLatestMoodType = cache(
+  async (sessionToken: Session['token'], babyId: Baby['id']) => {
+    const [latestMoodType] = await sql<LatestMoodType[]>`
+      SELECT
+        mood_types.name AS mood_type_name
+      FROM
+        message_conversations
+        INNER JOIN conversations ON (
+          conversations.id = message_conversations.conversation_id
+        )
+        INNER JOIN parent_connections ON (
+          parent_connections.id = conversations.parent_connection_id
+          AND parent_connections.status = TRUE
+        )
+        INNER JOIN sessions ON (
+          sessions.token = ${sessionToken}
+          AND sessions.expiry_timestamp > now()
+          AND (
+            parent_connections.user_one_id = sessions.user_id
+            OR parent_connections.user_two_id = sessions.user_id
+          )
+        )
+        INNER JOIN mood_types ON (
+          mood_types.id = message_conversations.mood_type_id
+        )
+      WHERE
+        message_conversations.baby_id = ${babyId}
+      ORDER BY
+        message_conversations.sent_at DESC,
+        message_conversations.id DESC
+      LIMIT
+        1
+    `;
+    return latestMoodType?.moodTypeName;
+  },
+);

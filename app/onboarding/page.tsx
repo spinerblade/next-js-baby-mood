@@ -1,4 +1,3 @@
-import { getBabies } from '@/database/babies';
 import {
   getAcceptedParentConnection,
   getParentConnectionRequests,
@@ -22,7 +21,6 @@ export default async function Onboarding() {
   if (!user) {
     redirect('/login?returnTo=/onboarding');
   }
-  const babies = await getBabies(sessionToken);
 
   const connectionRequests = await getParentConnectionRequests(sessionToken);
 
