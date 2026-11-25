@@ -1,5 +1,5 @@
 import type { Sql } from 'postgres';
-import z, { email } from 'zod';
+import z from 'zod';
 
 export type User = {
   id: number;
@@ -32,6 +32,24 @@ export const userSchemaLogin = z.object({
     username: z.string(),
     password: z.string(),
   }),
+});
+
+export const userSchemaProfile = z.object({
+  firstName: z
+    .string()
+    .trim()
+    .min(1, { error: 'Please enter your first name' })
+    .max(50),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, { error: 'Please enter your last name' })
+    .max(50),
+  birthDate: z.coerce
+    .date({ error: 'Please enter a valid birthdate' })
+    .refine((date) => date <= new Date(), {
+      error: 'Birthdate can not be in the future',
+    }),
 });
 
 export async function up(sql: Sql) {

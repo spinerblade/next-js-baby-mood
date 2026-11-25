@@ -1,6 +1,7 @@
 import type { Baby } from '@/migrations/00004-createTableBabies';
 import type { MoodType } from '@/migrations/00006-createTableMoodTypes';
 import type { Mood } from '@/migrations/00007-createTableMoods';
+import type { QuickMessage } from '@/migrations/00010-createTableQuickMessages';
 import type { MessageConversation } from '@/migrations/00013-createTableMessageConversations';
 import type { Session } from '@/migrations/00014-createTableSessions';
 import { cache } from 'react';
@@ -153,3 +154,55 @@ export const getLatestMoodType = cache(
     return latestMoodType?.moodTypeName;
   },
 );
+
+export async function createQuickMessageMessage(
+  sessionToken: Session['token'],
+  quickMessageId: QuickMessage['id'],
+) {
+  const [message] = await sql<MessageConversation[]>`
+    INSERT INTO
+      message_conversations (
+        conversation_id,
+        sender_id,
+        quick_message_id,
+        content
+      )
+    SELECT
+      conversations.id,
+      sessions.user_id,
+      quick_messages.id,
+      quick_messages.message_content
+    FROM
+      sessions
+      INNER JOIN quick_messages ON (
+        quick_messages.id = ${quickMessageId}
+        AND quick_messages.user_id = sessions.user_id
+      )
+      INNER JOIN parent_connections ON (
+        parent_connections.status = TRUE
+        AND (
+          parent_connections.user_one_id = sessions.user_id
+          OR parent_connections.user_two_id = sessions.user_id
+        )
+      )
+      INNER JOIN conversations ON (
+        conversations.parent_connection_id = parent_connections.id
+      )
+    WHERE
+      sessions.token = ${sessionToken}
+      AND sessions.expiry_timestamp > now()
+    RETURNING
+      id,
+      baby_id,
+      conversation_id,
+      sender_id,
+      quick_message_id,
+      mood_id,
+      emoji,
+      content,
+      mood_type_id,
+      sent_at,
+      is_read
+  `;
+  return message;
+}

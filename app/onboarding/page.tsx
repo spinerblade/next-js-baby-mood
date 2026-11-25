@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation';
 import BabyForm from './BabyForm';
 import OnboardingForm from './OnboardingForm';
 import PartnerRequests from './PartnerRequests';
+import ProfileForm from './ProfileForm';
 
 export const metadata = {
   title: 'Onboarding',
@@ -29,6 +30,11 @@ export default async function Onboarding() {
   return (
     <>
       <h1>Setup your Account details</h1>
+      <ProfileForm
+        firstName={user.firstName}
+        lastName={user.lastName}
+        birthDate={user.birthDate?.toISOString().slice(0, 10) ?? null}
+      />
       {acceptedConnection ? (
         <BabyForm />
       ) : (

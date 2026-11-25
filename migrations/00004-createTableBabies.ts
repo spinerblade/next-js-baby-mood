@@ -22,7 +22,8 @@ export const babySchema = z.object({
       .string({ error: 'Please enter a name' })
       .trim()
       .min(1, { error: 'Name must be minimum 1 character' })
-      .max(20, { error: 'Name must be maximum 20 characters' }),
+      .max(20, { error: 'Name must be maximum 20 characters' })
+      .transform((name) => name.charAt(0).toUpperCase() + name.slice(1)),
     birthDate: z.coerce
       .date({ error: 'Please enter a valid birthdate' })
       .refine((date) => date <= new Date(), {
@@ -52,25 +53,23 @@ export const babyIdSchema = z.coerce
 
 export async function up(sql: Sql) {
   await sql`
-    CREATE TABLE babies(
-      id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      parent_connection_id INTEGER NOT NULL REFERENCES parent_connections (id) ON DELETE CASCADE,
-      name VARCHAR(255) NOT NULL,
-      birth_date DATE NOT NULL,
-      weight INTEGER NOT NULL,
-      height INTEGER NOT NULL,
-      gender_id INTEGER NOT NULL REFERENCES genders (id),
-      created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-      updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-      energy INTEGER NULL,
-      profile_picture_url VARCHAR(255) NULL,
-      latest_picture_url VARCHAR(255) NULL
+    CREATE TABLE babies (
+      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      parent_connection_id integer NOT NULL REFERENCES parent_connections (id) ON DELETE CASCADE,
+      name varchar(255) NOT NULL,
+      birth_date date NOT NULL,
+      weight integer NOT NULL,
+      height integer NOT NULL,
+      gender_id integer NOT NULL REFERENCES genders (id),
+      created_at timestamp(0) without time zone NOT NULL DEFAULT now(),
+      updated_at timestamp(0) without time zone NOT NULL DEFAULT now(),
+      energy integer NULL,
+      profile_picture_url varchar(255) NULL,
+      latest_picture_url varchar(255) NULL
     );
   `;
 }
 
 export async function down(sql: Sql) {
-  await sql`
-    DROP TABLE babies
-  `;
+  await sql` DROP TABLE babies `;
 }

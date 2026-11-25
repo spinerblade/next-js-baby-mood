@@ -78,3 +78,72 @@ export const getAchievements = cache(
     return achievements;
   },
 );
+
+export const updateAchievement = cache(
+  async (
+    sessionToken: Session['token'],
+    achievementId: Achievement['id'],
+    description: Achievement['description'],
+    date: Achievement['date'],
+  ) => {
+    const [achievement] = await sql<Achievement[]>`
+      UPDATE achievements
+      SET
+        description = ${description},
+        date = ${date},
+        updated_at = now()
+      FROM
+        sessions,
+        babies,
+        parent_connections
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND achievements.id = ${achievementId}
+        AND achievements.baby_id = babies.id
+        AND parent_connections.id = babies.parent_connection_id
+        AND parent_connections.status = TRUE
+        AND (
+          parent_connections.user_one_id = sessions.user_id
+          OR parent_connections.user_two_id = sessions.user_id
+        )
+      RETURNING
+        achievements.id,
+        achievements.baby_id,
+        achievements.date,
+        achievements.description,
+        achievements.created_at,
+        achievements.updated_at
+    `;
+    return achievement;
+  },
+);
+
+export const deleteAchievement = cache(
+  async (sessionToken: Session['token'], achievementId: Achievement['id']) => {
+    const [achievement] = await sql<Achievement[]>`
+      DELETE FROM achievements USING babies,
+      parent_connections,
+      sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND achievements.id = ${achievementId}
+        AND achievements.baby_id = babies.id
+        AND parent_connections.id = babies.parent_connection_id
+        AND parent_connections.status = TRUE
+        AND (
+          parent_connections.user_one_id = sessions.user_id
+          OR parent_connections.user_two_id = sessions.user_id
+        )
+      RETURNING
+        achievements.id,
+        achievements.baby_id,
+        achievements.date,
+        achievements.description,
+        achievements.created_at,
+        achievements.updated_at
+    `;
+    return achievement;
+  },
+);

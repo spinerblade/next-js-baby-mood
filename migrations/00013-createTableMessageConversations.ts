@@ -15,11 +15,16 @@ export type MessageConversation = {
   isRead: boolean;
 };
 
-export const moodMessageSchema = z.object({
-  message: z.object({
-    moodId: z.number().int().positive(),
-    babyId: z.number().int().positive(),
-  }),
+export const messageSchema = z.object({
+  message: z.union([
+    z.object({
+      moodId: z.number().int().positive(),
+      babyId: z.number().int().positive(),
+    }),
+    z.object({
+      quickMessageId: z.number().int().positive(),
+    }),
+  ]),
 });
 
 export async function up(sql: Sql) {

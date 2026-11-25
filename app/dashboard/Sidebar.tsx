@@ -1,7 +1,8 @@
+import type { MessageWithBabyName } from '@/database/messages';
 import type { Partner } from '@/database/parentConnection';
 import type { Baby } from '@/migrations/00004-createTableBabies';
 import type { Mood } from '@/migrations/00007-createTableMoods';
-import Link from 'next/link';
+import { formatHeight, formatWeight, getDisplayName } from '@/util/format';
 import styles from './Sidebar.module.scss';
 
 type Props = {
@@ -9,49 +10,48 @@ type Props = {
   username: string;
   partner: Partner | undefined;
   moods: Mood[];
+  latestMoodMessage: MessageWithBabyName | undefined;
 };
 
 export default function Sidebar(props: Props) {
   return (
     <aside className={styles.sidebar}>
-      <h2>Sidebar</h2>
       <section className={styles.section}>
-        <h3>My Baby</h3>
+        <h2>My Baby</h2>
         <dl>
           <dt>Baby name</dt>
           <dd>{props.baby.name}</dd>
           <dt>Birth date</dt>
           <dd>{props.baby.birthDate.toLocaleDateString()}</dd>
           <dt>Weight</dt>
-          <dd>{props.baby.weight}</dd>
+          <dd>{formatWeight(props.baby.weight)}</dd>
           <dt>Height</dt>
-          <dd>{props.baby.height}</dd>
+          <dd>{formatHeight(props.baby.height)}</dd>
           <dt>Mood</dt>
-          <dd>currentMood</dd>
+          <dd>
+            {props.latestMoodMessage
+              ? `${props.latestMoodMessage.emoji} ${props.latestMoodMessage.content}`
+              : 'No mood sent yet'}
+            {props.latestMoodMessage && (
+              <small>
+                {' '}
+                ·{' '}
+                {props.latestMoodMessage.sentAt.toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </small>
+            )}
+          </dd>
         </dl>
       </section>
       <section className={styles.section}>
-        <h3>My Partner</h3>
-        <p>{props.partner ? props.partner.username : 'No partner connected'}</p>
-      </section>
-      <section className={styles.section}>
-        <h3>My Quick Messages</h3>
-        {props.moods.length === 0 ? (
-          <p>
-            No moods yet –{' '}
-            <Link href={`/profile/${props.username}`}>create one</Link>
-          </p>
-        ) : (
-          <ul>
-            {props.moods.map((mood) => (
-              <li key={`sidebar-mood-${mood.id}`}>
-                <button type="button">
-                  {mood.emoji} {mood.description}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+        <h2>My Partner</h2>
+        <p>
+          {props.partner
+            ? getDisplayName(props.partner)
+            : 'No partner connected'}
+        </p>
       </section>
     </aside>
   );

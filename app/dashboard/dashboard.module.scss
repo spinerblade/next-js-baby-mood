@@ -7,3 +7,19 @@
 .mainContent {
   padding: 2rem;
 }
+
+.row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 16rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--color-surface);
+}

@@ -1,13 +1,17 @@
 import ImageUpload from '@/app/ImageUpload';
 import { getMoods } from '@/database/moods';
 import { getMoodTypes } from '@/database/moodTypes';
+import { getQuickMessages } from '@/database/quickMessages';
+import { getQuickMessageTypes } from '@/database/quickMessageTypes';
 import { getUser } from '@/database/users';
 import { getCookie } from '@/util/cookies';
+import { getDisplayName } from '@/util/format';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { updateUserPicture } from '../actions';
-import CloudinaryImage from '../Cloudinary';
+import CloudinaryImage from '../CloudinaryImage';
 import MoodSetup from '../MoodSetup';
+import QuickMessageSetup from '../QuickMessageSetup';
 
 export const metadata = {
   title: 'Profile',
@@ -29,14 +33,16 @@ export default async function ProfilePage(
   }
   const moodTypes = await getMoodTypes(sessionToken);
   const moods = await getMoods(sessionToken);
+  const quickMessageTypes = await getQuickMessageTypes(sessionToken);
+  const quickMessages = await getQuickMessages(sessionToken);
   return (
     <>
       <h1>Profile</h1>
-      <h2>{username}</h2>
+      <h2>{getDisplayName(user)}</h2>
       {user.profilePictureUrl && (
         <CloudinaryImage
           publicId={user.profilePictureUrl}
-          alt={username}
+          alt={getDisplayName(user)}
           width={150}
           height={150}
         />
@@ -50,6 +56,10 @@ export default async function ProfilePage(
       <h3>Setup</h3>
       <Link href="/onboarding">Click here to add your partner and babies</Link>
       <MoodSetup moodTypes={moodTypes} moods={moods} />
+      <QuickMessageSetup
+        quickMessageTypes={quickMessageTypes}
+        quickMessages={quickMessages}
+      />
     </>
   );
 }

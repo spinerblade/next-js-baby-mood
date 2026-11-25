@@ -1,11 +1,13 @@
 import { getBabies } from '@/database/babies';
 import { getUser } from '@/database/users';
 import { getCookie } from '@/util/cookies';
+import { getDisplayName } from '@/util/format';
 import { getSelectedBaby } from '@/util/selectedBaby';
 import Link from 'next/link';
 import LogoutButton from './(auth)/logout/LogoutButton';
 import BabySwitcher from './Babyswitcher/BabySwitcher';
 import styles from './Header.module.scss';
+import CloudinaryImage from './profile/CloudinaryImage';
 
 export default async function Header() {
   const sessionToken = await getCookie('sessionToken');
@@ -20,11 +22,33 @@ export default async function Header() {
         <ul>
           {!user ? null : (
             <>
-              <li>
-                <Link href={`/profile/${user.username}`}>{user.username}</Link>
-              </li>
+              {!user.profilePictureUrl ? (
+                <li>
+                  <Link href={`/profile/${user.username}`}>
+                    {getDisplayName(user)}
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <Link href={`/profile/${user.username}`}>
+                    <CloudinaryImage
+                      publicId={user.profilePictureUrl}
+                      alt={getDisplayName(user)}
+                      width={100}
+                      height={100}
+                    />
+                  </Link>
+                </li>
+              )}
               <li>
                 <LogoutButton />
+              </li>
+              <li>
+                <Link href="/dashboard">BabyMood</Link>
+              </li>
+
+              <li>
+                <Link href="/achievements">Achievements</Link>
               </li>
               {selectedBaby && (
                 <li>
@@ -34,13 +58,6 @@ export default async function Header() {
                   />
                 </li>
               )}
-              <li>
-                <Link href="/dashboard">BabyMood</Link>
-              </li>
-
-              <li>
-                <Link href="/achievements">Achievements</Link>
-              </li>
             </>
           )}
         </ul>

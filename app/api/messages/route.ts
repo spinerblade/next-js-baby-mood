@@ -1,8 +1,11 @@
-import { createMoodMessage } from '@/database/messages';
+import {
+  createMoodMessage,
+  createQuickMessageMessage,
+} from '@/database/messages';
 import { getUser } from '@/database/users';
 import {
   type MessageConversation,
-  moodMessageSchema,
+  messageSchema,
 } from '@/migrations/00013-createTableMessageConversations';
 import { getCookie } from '@/util/cookies';
 import { getCombinedErrorMessage } from '@/util/validation';
@@ -28,7 +31,7 @@ export async function POST(
     );
   }
   const requestBody = await request.json();
-  const result = moodMessageSchema.safeParse(requestBody);
+  const result = messageSchema.safeParse(requestBody);
   if (!result.success) {
     return NextResponse.json(
       {
@@ -40,23 +43,17 @@ export async function POST(
     );
   }
 
-  const moodMessage = await createMoodMessage(
-    sessionToken,
-    result.data.message.moodId,
-    result.data.message.babyId,
-  );
-  if (!moodMessage) {
+  const data = result.data.message;
+  const message =
+    'moodId' in data
+      ? await createMoodMessage(sessionToken, data.moodId, data.babyId)
+      : await createQuickMessageMessage(sessionToken, data.quickMessageId);
+
+  if (!message) {
     return NextResponse.json(
-      { error: 'Mood or baby not found' },
+      { error: 'Message could not be sent' },
       { status: 404 },
     );
   }
-  return NextResponse.json(
-    {
-      message: moodMessage,
-    },
-    {
-      status: 201,
-    },
-  );
+  return NextResponse.json({ message: message }, { status: 201 });
 }

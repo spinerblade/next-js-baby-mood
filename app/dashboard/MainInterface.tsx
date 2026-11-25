@@ -1,9 +1,8 @@
 import type { Baby } from '@/migrations/00004-createTableBabies';
-import Image from 'next/image';
 import type { ReactNode } from 'react';
 import ImageUpload from '../ImageUpload';
 import { updateBabyPicture } from '../profile/actions';
-import CloudinaryImage from '../profile/Cloudinary';
+import CloudinaryImage from '../profile/CloudinaryImage';
 import styles from './MainInterface.module.scss';
 
 type Props = {
@@ -14,7 +13,6 @@ type Props = {
 export default function MainInterface(props: Props) {
   return (
     <section className={styles.mainInterface}>
-      <h2>Main Interface</h2>
       {props.baby.profilePictureUrl ? (
         <CloudinaryImage
           publicId={props.baby.profilePictureUrl}
@@ -22,14 +20,7 @@ export default function MainInterface(props: Props) {
           width={100}
           height={120}
         />
-      ) : (
-        <Image
-          src="/images/baby_profile_picture_placeholder.webp"
-          alt="profile picture baby"
-          width={100}
-          height={120}
-        />
-      )}
+      ) : null}
       <ImageUpload
         folder="babies"
         label="Upload baby picture"

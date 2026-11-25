@@ -1,5 +1,5 @@
 import type { Sql } from 'postgres';
-import z, { emoji } from 'zod';
+import z from 'zod';
 
 export type Mood = {
   id: number;

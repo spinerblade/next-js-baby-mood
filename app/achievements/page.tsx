@@ -3,8 +3,7 @@ import { getValidSession } from '@/database/sessions';
 import { getCookie } from '@/util/cookies';
 import { getSelectedBaby } from '@/util/selectedBaby';
 import { redirect } from 'next/navigation';
-import AchievementForm from './AchievementForm';
-import Timeline from './Timeline';
+import AchievementsSection from './AchievementsSection';
 
 export const metadata = {
   title: 'Achievements',
@@ -25,10 +24,5 @@ export default async function AchievementPage() {
   }
 
   const achievements = await getAchievements(sessionToken, baby.id);
-  return (
-    <>
-      <Timeline achievements={achievements} />
-      <AchievementForm babyId={baby.id} />
-    </>
-  );
+  return <AchievementsSection achievements={achievements} babyId={baby.id} />;
 }

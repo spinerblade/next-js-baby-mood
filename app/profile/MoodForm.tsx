@@ -47,7 +47,7 @@ export default function MoodForm(props: Props) {
       }}
     >
       <label>
-        Mood Description
+        Mood description
         <input
           required
           value={moodDescription}
@@ -58,7 +58,7 @@ export default function MoodForm(props: Props) {
         />
       </label>
       <label>
-        Mood Type
+        Mood type
         <select
           required
           value={moodTypeId}
@@ -77,7 +77,7 @@ export default function MoodForm(props: Props) {
         </select>
       </label>
       <label>
-        Mood Emoji
+        Mood emoji
         <select
           required
           value={moodEmoji}
@@ -95,7 +95,7 @@ export default function MoodForm(props: Props) {
           })}
         </select>
       </label>
-      <button>Submit</button>
+      <button>Create Mood</button>
       <ErrorMessage>{errorMessage}</ErrorMessage>
       {!!successMessage && <p>{successMessage}</p>}
     </form>

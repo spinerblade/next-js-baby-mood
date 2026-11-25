@@ -5,11 +5,22 @@ import { sql } from './connect';
 
 export const getUser = cache(async (sessionToken: Session['token']) => {
   const [user] = await sql<
-    Pick<User, 'id' | 'username' | 'profilePictureUrl'>[]
+    Pick<
+      User,
+      | 'id'
+      | 'username'
+      | 'firstName'
+      | 'lastName'
+      | 'birthDate'
+      | 'profilePictureUrl'
+    >[]
   >`
     SELECT
       users.id,
       users.username,
+      users.first_name,
+      users.last_name,
+      users.birth_date,
       users.profile_picture_url
     FROM
       users
@@ -22,24 +33,25 @@ export const getUser = cache(async (sessionToken: Session['token']) => {
   return user;
 });
 
-export const updateUserProfilePicture = cache(
-  async (sessionToken: Session['token'], publicId: string) => {
-    const [user] = await sql<Pick<User, 'id'>[]>`
-      UPDATE users
-      SET
-        profile_picture_url = ${publicId}
-      FROM
-        sessions
-      WHERE
-        sessions.token = ${sessionToken}
-        AND sessions.expiry_timestamp > now()
-        AND sessions.user_id = users.id
-      RETURNING
-        users.id
-    `;
-    return user;
-  },
-);
+export async function updateUserProfilePicture(
+  sessionToken: Session['token'],
+  publicId: string,
+) {
+  const [user] = await sql<Pick<User, 'id'>[]>`
+    UPDATE users
+    SET
+      profile_picture_url = ${publicId}
+    FROM
+      sessions
+    WHERE
+      sessions.token = ${sessionToken}
+      AND sessions.expiry_timestamp > now()
+      AND sessions.user_id = users.id
+    RETURNING
+      users.id
+  `;
+  return user;
+}
 
 export const getUserInsecure = cache(async (username: User['username']) => {
   const [user] = await sql<Pick<User, 'id' | 'username'>[]>`
@@ -73,6 +85,36 @@ export const getUserWithPasswordHashInsecure = cache(
     return user;
   },
 );
+
+export async function updateUserNames(
+  sessionToken: Session['token'],
+  firstName: string,
+  lastName: string,
+  birthDate: Date,
+) {
+  const [user] = await sql<
+    Pick<User, 'id' | 'firstName' | 'lastName' | 'birthDate'>[]
+  >`
+    UPDATE users
+    SET
+      first_name = ${firstName},
+      last_name = ${lastName},
+      birth_date = ${birthDate},
+      updated_at = now()
+    FROM
+      sessions
+    WHERE
+      sessions.token = ${sessionToken}
+      AND sessions.expiry_timestamp > now()
+      AND sessions.user_id = users.id
+    RETURNING
+      users.id,
+      users.first_name,
+      users.last_name,
+      users.birth_date
+  `;
+  return user;
+}
 
 export const createUserInsecure = cache(
   async (username: User['username'], passwordHash: string, email: string) => {

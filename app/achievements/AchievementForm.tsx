@@ -1,11 +1,18 @@
 'use client';
 
 import ErrorMessage from '@/ErrorMessage';
+import type { Baby } from '@/migrations/00004-createTableBabies';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { CreateAchievementResponseBodyPost } from '../api/achievements/route';
 
-export default function AchievementForm(props: { babyId: number }) {
+type Props = {
+  babyId: Baby['id'];
+  isEditing: boolean;
+  onToggleEditing: () => void;
+};
+
+export default function AchievementForm(props: Props) {
   const [achievementDescription, setAchievementDescription] = useState('');
   const [achievementDate, setAchievementDate] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,7 +51,7 @@ export default function AchievementForm(props: { babyId: number }) {
       }}
     >
       <label>
-        Achievement Description
+        Achievement description
         <textarea
           name="achievementDescription"
           required
@@ -66,7 +73,17 @@ export default function AchievementForm(props: { babyId: number }) {
           }}
         />
       </label>
-      <button>Submit</button>
+      <button>Create achievement</button>
+
+      <button
+        type="button"
+        onClick={() => {
+          props.onToggleEditing();
+        }}
+      >
+        {props.isEditing ? 'Done' : 'Edit'}
+      </button>
+
       <ErrorMessage>{errorMessage}</ErrorMessage>
       {!!successMessage && <p>{successMessage}</p>}
     </form>
