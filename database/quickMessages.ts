@@ -1,4 +1,4 @@
-import type { QuickMessage } from '@/migrations/00010-createTableQuickMessages';
+import type { QuickMessage } from '@/migrations/00011-createTableQuickMessages';
 import type { Session } from '@/migrations/00014-createTableSessions';
 import { cache } from 'react';
 import { sql } from './connect';

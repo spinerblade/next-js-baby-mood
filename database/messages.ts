@@ -1,7 +1,7 @@
 import type { Baby } from '@/migrations/00004-createTableBabies';
 import type { MoodType } from '@/migrations/00006-createTableMoodTypes';
-import type { Mood } from '@/migrations/00007-createTableMoods';
-import type { QuickMessage } from '@/migrations/00010-createTableQuickMessages';
+import type { Mood } from '@/migrations/00008-createTableMoods';
+import type { QuickMessage } from '@/migrations/00011-createTableQuickMessages';
 import type { MessageConversation } from '@/migrations/00013-createTableMessageConversations';
 import type { Session } from '@/migrations/00014-createTableSessions';
 import { cache } from 'react';

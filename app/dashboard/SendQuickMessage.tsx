@@ -1,7 +1,7 @@
 'use client';
 
 import ErrorMessage from '@/ErrorMessage';
-import type { QuickMessage } from '@/migrations/00010-createTableQuickMessages';
+import type { QuickMessage } from '@/migrations/00011-createTableQuickMessages';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { CreateMessageConversationResponseBodyPost } from '../api/messages/route';

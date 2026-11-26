@@ -2,7 +2,7 @@
 
 import ErrorMessage from '@/ErrorMessage';
 import type { Baby } from '@/migrations/00004-createTableBabies';
-import type { Mood } from '@/migrations/00007-createTableMoods';
+import type { Mood } from '@/migrations/00008-createTableMoods';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { CreateMessageConversationResponseBodyPost } from '../api/messages/route';

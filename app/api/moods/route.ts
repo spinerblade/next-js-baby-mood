@@ -1,6 +1,6 @@
 import { createMood } from '@/database/moods';
 import { getUser } from '@/database/users';
-import { type Mood, moodSchema } from '@/migrations/00007-createTableMoods';
+import { type Mood, moodSchema } from '@/migrations/00008-createTableMoods';
 import { getCookie } from '@/util/cookies';
 import { getCombinedErrorMessage } from '@/util/validation';
 import { NextResponse } from 'next/server';

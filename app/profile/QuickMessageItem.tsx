@@ -2,7 +2,7 @@
 
 import ErrorMessage from '@/ErrorMessage';
 import type { QuickMessageType } from '@/migrations/00009-createTableQuickMessageTypes';
-import type { QuickMessage } from '@/migrations/00010-createTableQuickMessages';
+import type { QuickMessage } from '@/migrations/00011-createTableQuickMessages';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type {

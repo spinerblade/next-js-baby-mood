@@ -6,7 +6,7 @@ import {
   type QuickMessage,
   quickMessageIdSchema,
   quickMessageSchema,
-} from '@/migrations/00010-createTableQuickMessages';
+} from '@/migrations/00011-createTableQuickMessages';
 import { getCookie } from '@/util/cookies';
 import { getCombinedErrorMessage } from '@/util/validation';
 import { NextResponse } from 'next/server';

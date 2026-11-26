@@ -1,4 +1,4 @@
-import type { Mood } from '@/migrations/00007-createTableMoods';
+import type { Mood } from '@/migrations/00008-createTableMoods';
 import type { Session } from '@/migrations/00014-createTableSessions';
 import { cache } from 'react';
 import { sql } from './connect';

@@ -2,7 +2,7 @@
 
 import ErrorMessage from '@/ErrorMessage';
 import type { MoodType } from '@/migrations/00006-createTableMoodTypes';
-import type { Mood } from '@/migrations/00007-createTableMoods';
+import type { Mood } from '@/migrations/00008-createTableMoods';
 import { moodsEmojis } from '@/util/moodsEmojis';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
