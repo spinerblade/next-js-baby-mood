@@ -7,15 +7,13 @@ export type QuickMessageType = {
 
 export async function up(sql: Sql) {
   await sql`
-    CREATE TABLE quick_message_types(
-      id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      name VARCHAR(255) NOT NULL
+    CREATE TABLE quick_message_types (
+      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      name varchar(255) NOT NULL
     );
   `;
 }
 
 export async function down(sql: Sql) {
-  await sql`
-    DROP TABLE quick_message_types
-  `;
+  await sql` DROP TABLE quick_message_types `;
 }

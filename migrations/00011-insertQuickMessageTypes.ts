@@ -13,7 +13,9 @@ export async function up(sql: Sql) {
       INSERT INTO
         quick_message_types (name)
       VALUES
-        (${quickMessageType.name})
+        (
+          ${quickMessageType.name}
+        )
     `;
   }
 }

@@ -1,15 +1,12 @@
 import type { MessageWithBabyName } from '@/database/messages';
 import type { Partner } from '@/database/parentConnection';
 import type { Baby } from '@/migrations/00004-createTableBabies';
-import type { Mood } from '@/migrations/00007-createTableMoods';
 import { formatHeight, formatWeight, getDisplayName } from '@/util/format';
 import styles from './Sidebar.module.scss';
 
 type Props = {
   baby: Baby;
-  username: string;
   partner: Partner | undefined;
-  moods: Mood[];
   latestMoodMessage: MessageWithBabyName | undefined;
 };
 

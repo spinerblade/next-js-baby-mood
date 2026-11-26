@@ -12,6 +12,9 @@ jobs:
       PGDATABASE: next_js_example
       PGUSERNAME: next_js_example
       PGPASSWORD: next_js_example
+      NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ci-dummy
+      NEXT_PUBLIC_CLOUDINARY_API_KEY: ci-dummy
+      CLOUDINARY_API_SECRET: ci-dummy
     steps:
       - name: Start preinstalled PostgreSQL on Ubuntu
         run: |

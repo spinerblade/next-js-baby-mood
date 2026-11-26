@@ -13,7 +13,9 @@ export async function up(sql: Sql) {
       INSERT INTO
         genders (type)
       VALUES
-        (${gender.type})
+        (
+          ${gender.type}
+        )
     `;
   }
 }

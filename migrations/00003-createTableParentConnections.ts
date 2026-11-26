@@ -25,20 +25,18 @@ export const parentConnectionIdSchema = z.coerce
 
 export async function up(sql: Sql) {
   await sql`
-    CREATE TABLE parent_connections(
-      id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      user_one_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-      user_two_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-      status BOOLEAN NOT NULL,
-      created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-      updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT now(),
+    CREATE TABLE parent_connections (
+      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      user_one_id integer NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+      user_two_id integer NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+      status boolean NOT NULL,
+      created_at timestamp(0) without time zone NOT NULL DEFAULT now(),
+      updated_at timestamp(0) without time zone NOT NULL DEFAULT now(),
       UNIQUE (user_one_id, user_two_id)
     );
   `;
 }
 
 export async function down(sql: Sql) {
-  await sql`
-    DROP TABLE parent_connections
-  `;
+  await sql` DROP TABLE parent_connections `;
 }

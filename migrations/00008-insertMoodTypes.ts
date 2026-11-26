@@ -13,7 +13,9 @@ export async function up(sql: Sql) {
       INSERT INTO
         mood_types (name)
       VALUES
-        (${moodType.name})
+        (
+          ${moodType.name}
+        )
     `;
   }
 }

@@ -51,8 +51,6 @@ export default async function DashboardPage() {
       <Sidebar
         baby={baby}
         partner={partner}
-        moods={moods}
-        username={user.username}
         latestMoodMessage={latestMoodMessage}
       />
       <main className={styles.mainContent}>
