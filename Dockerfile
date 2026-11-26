@@ -1,0 +1,63 @@
+FROM node:lts-alpine AS builder
+
+# Prevent npx get-pnpm EBADDEVENGINES failure from
+# devEngines.packageManager in /app/package.json
+WORKDIR /
+
+# Install necessary tools
+RUN apk add --no-cache libc6-compat yq --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
+
+# Install pnpm on Alpine Linux using get-pnpm
+# https://github.com/pnpm/pnpm/issues/784#issuecomment-1518582235
+COPY package.json /app/
+ENV PNPM_HOME=/pnpm
+ENV PATH="$PNPM_HOME/bin:$PATH"
+RUN ENV="$HOME/.shrc" SHELL=/bin/sh npx --yes get-pnpm \
+  "$(node --input-type=module --eval \
+    'console.log((await import("/app/package.json", { with: { type: "json" } })).default.devEngines.packageManager.version)')"
+
+WORKDIR /app
+
+# Copy the content of the project to the machine
+COPY . .
+# Edit devDependencies to remove packages not needed in production
+RUN yq --inplace --output-format=json '(.devDependencies = (.devDependencies | to_entries | map(select(.key | test("^(@jest/globals|@playwright/test|@ts-safeql/eslint-plugin|jest|jest-environment-jsdom|libpg-query|prettier|prettier-plugin-embed|prettier-plugin-sql|stylelint|stylelint-config-upleveled)$") | not)) | from_entries))' package.json
+RUN pnpm install
+RUN pnpm build
+
+# Multi-stage builds: runner stage
+FROM node:lts-alpine AS runner
+ENV NODE_ENV=production
+
+# Prevent npx get-pnpm EBADDEVENGINES failure from
+# devEngines.packageManager in /app/package.json
+WORKDIR /
+
+# Install necessary tools
+RUN apk add bash postgresql
+
+# Install pnpm on Alpine Linux using get-pnpm
+# https://github.com/pnpm/pnpm/issues/784#issuecomment-1518582235
+COPY --from=builder /app/package.json /app/
+ENV PNPM_HOME=/pnpm
+ENV PATH="$PNPM_HOME/bin:$PATH"
+RUN ENV="$HOME/.shrc" SHELL=/bin/sh npx --yes get-pnpm \
+  "$(node --input-type=module --eval \
+    'console.log((await import("/app/package.json", { with: { type: "json" } })).default.devEngines.packageManager.version)')"
+
+WORKDIR /app
+
+# Copy built app
+COPY --from=builder /app/.next ./.next
+
+# Copy only necessary files to run the app (minimize production app size, improve performance)
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/next.config.ts ./
+
+# Copy start script and make it executable
+COPY --from=builder /app/scripts ./scripts
+RUN chmod +x /app/scripts/fly-io-start.sh
+
+CMD ["./scripts/fly-io-start.sh"]
