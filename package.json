@@ -25,6 +25,8 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@jest/globals": "30.5.2",
+    "@playwright/test": "1.63.0",
     "@recharts/devtools": "^0.0.19",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/turbopack": "^4",
@@ -37,6 +39,8 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^10.12.0",
     "eslint-config-upleveled": "^11.0.3",
+    "jest": "30.5.2",
+    "jest-environment-jsdom": "30.5.2",
     "libpg-query": "^18.2.2",
     "prettier": "^3.9.10",
     "prettier-plugin-embed": "^0.8.2",

@@ -17,9 +17,9 @@ export const userSchemaSignUp = z.object({
   user: z.object({
     username: z
       .string()
+      .trim()
       .min(3, { error: 'Username must be minimum 3 characters' })
-      .max(20, { error: 'Username must be maximum 20 characters' })
-      .trim(),
+      .max(20, { error: 'Username must be maximum 20 characters' }),
     password: z
       .string()
       .min(8, { error: 'Password must be minimum 8 characters' }),
