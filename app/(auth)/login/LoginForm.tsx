@@ -50,7 +50,7 @@ export default function LoginForm(props: Props) {
     >
       <div className={styles.container}>
         <label>
-          User Name
+          Username
           <input
             autoComplete="username"
             placeholder="Enter Username"

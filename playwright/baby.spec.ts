@@ -49,8 +49,7 @@ test('connected partners set up a baby and see it on the dashboard', async ({
   await page.getByLabel("Baby's current height").fill('52');
   await page.getByRole('button', { name: 'Submit' }).click();
 
-  // The schema capitalizes the name
-  await expect(page.getByText('Daniel was added!')).toBeVisible();
+  await expect(page.getByText('Daniel has joined the chat! 😎')).toBeVisible();
 
   // 5. The dashboard shows the baby
   await page.getByRole('button', { name: 'Go to dashboard' }).click();

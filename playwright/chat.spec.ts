@@ -46,7 +46,7 @@ test('a user sends a mood and the partner receives it', async ({ page }) => {
   await page.getByLabel("Baby's current weight").fill('3200');
   await page.getByLabel("Baby's current height").fill('52');
   await page.getByRole('button', { name: 'Submit' }).click();
-  await expect(page.getByText('Daniel was added!')).toBeVisible();
+  await expect(page.getByText('Daniel has joined the chat! 😎')).toBeVisible();
 
   // 4. User A creates a mood on the profile page
   await page.goto(`/profile/${userA}`);

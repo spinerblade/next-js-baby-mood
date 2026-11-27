@@ -52,7 +52,7 @@ export default async function ProfilePage(
           <h2>{getDisplayName(user)}</h2>
           <span className={styles.username}>@{user.username}</span>
           <Link className="buttonLink self-start" href="/onboarding">
-            Edit profile & partner and add babies
+            Edit profile & add babies
           </Link>
         </div>
       </section>

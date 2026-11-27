@@ -29,7 +29,7 @@ export default function BabyForm(props: Props) {
           <i>One last step to unlock full access to the app:</i>
         </>
       ) : (
-        <h2>You are connect to your partner!</h2>
+        <h2>You are connected to your partner!</h2>
       )}
       <section className={styles.babyForm}>
         <h2>Set up your Baby's Information</h2>

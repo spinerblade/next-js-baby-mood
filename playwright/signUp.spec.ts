@@ -32,7 +32,6 @@ const invalidSignUps = [
     error: 'Password must be minimum 8 characters',
   },
   {
-    // passes the browser's type="email" check, but not Zod
     field: 'email',
     username: 'max94',
     password: 'secret1234',
