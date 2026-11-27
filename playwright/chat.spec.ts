@@ -16,6 +16,7 @@ test('a user sends a mood and the partner receives it', async ({ page }) => {
   await expect(page).toHaveURL('/onboarding');
 
   await logoutButton.click();
+  await expect(logoutButton).toBeHidden();
 
   // 2. Sign up user B and send a request to A
   await page.goto('/signUp');
@@ -31,10 +32,11 @@ test('a user sends a mood and the partner receives it', async ({ page }) => {
   await expect(page.getByText(`Request sent to ${userA}`)).toBeVisible();
 
   await logoutButton.click();
+  await expect(logoutButton).toBeHidden();
 
   // 3. User A logs in, accepts and adds a baby
   await page.goto('/login');
-  await page.getByLabel('User Name').fill(userA);
+  await page.getByLabel('Username').fill(userA);
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Log In' }).click();
   await expect(page).toHaveURL('/onboarding');
@@ -64,10 +66,11 @@ test('a user sends a mood and the partner receives it', async ({ page }) => {
   ).toBeVisible();
 
   await logoutButton.click();
+  await expect(logoutButton).toBeHidden();
 
   // 6. User B logs in and sees the mood from A
   await page.goto('/login');
-  await page.getByLabel('User Name').fill(userB);
+  await page.getByLabel('Username').fill(userB);
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Log In' }).click();
   await expect(page).toHaveURL('/dashboard');

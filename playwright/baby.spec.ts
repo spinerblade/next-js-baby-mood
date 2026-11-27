@@ -17,6 +17,7 @@ test('connected partners set up a baby and see it on the dashboard', async ({
   await expect(page).toHaveURL('/onboarding');
 
   await logoutButton.click();
+  await expect(logoutButton).toBeHidden();
 
   // 2. Sign up user B and send a request to A
   await page.goto('/signUp');
@@ -32,10 +33,11 @@ test('connected partners set up a baby and see it on the dashboard', async ({
   await expect(page.getByText(`Request sent to ${userA}`)).toBeVisible();
 
   await logoutButton.click();
+  await expect(logoutButton).toBeHidden();
 
   // 3. User A logs in and accepts
   await page.goto('/login');
-  await page.getByLabel('User Name').fill(userA);
+  await page.getByLabel('Username').fill(userA);
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Log In' }).click();
   await expect(page).toHaveURL('/onboarding');

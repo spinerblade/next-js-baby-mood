@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 test('two users sign up and connect as partners', async ({ page }) => {
-  const userA = `a${Date.now()}`;
-  const userB = `b${Date.now()}`;
+  const userA = `usera${Date.now()}`;
+  const userB = `userb${Date.now()}`;
   const password = 'secret1234';
   const logoutButton = page.getByRole('button', { name: 'Logout' });
 
@@ -15,6 +15,7 @@ test('two users sign up and connect as partners', async ({ page }) => {
   await expect(page).toHaveURL('/onboarding');
 
   await logoutButton.click();
+  await expect(logoutButton).toBeHidden();
 
   // 2. Sign up user B
   await page.goto('/signUp');
@@ -25,10 +26,11 @@ test('two users sign up and connect as partners', async ({ page }) => {
   await expect(page).toHaveURL('/onboarding');
 
   await logoutButton.click();
+  await expect(logoutButton).toBeHidden();
 
   // 3. User B logs in, searches for A and sends a request
   await page.goto('/login');
-  await page.getByLabel('User Name').fill(userB);
+  await page.getByLabel('Username').fill(userB);
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Log In' }).click();
   await expect(page).toHaveURL('/onboarding');
@@ -43,10 +45,11 @@ test('two users sign up and connect as partners', async ({ page }) => {
   await expect(page.getByText(`Request sent to ${userA}`)).toBeVisible();
 
   await logoutButton.click();
+  await expect(logoutButton).toBeHidden();
 
   // 4. User A logs in and accepts the request
   await page.goto('/login');
-  await page.getByLabel('User Name').fill(userA);
+  await page.getByLabel('Username').fill(userA);
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Log In' }).click();
   await expect(page).toHaveURL('/onboarding');
