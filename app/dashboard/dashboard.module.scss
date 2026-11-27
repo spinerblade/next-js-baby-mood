@@ -23,3 +23,43 @@
   border-radius: 1rem;
   background-color: var(--color-surface);
 }
+
+.achievementCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 16rem;
+  margin-left: auto;
+  padding: 1rem 1.5rem;
+  border-radius: 20px;
+  background-color: var(--color-primary);
+  box-shadow: 0 12px 30px hsl(0 0% 0% / 0.25);
+  animation: bobbing 3s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+  transition:
+    box-shadow 0.3s,
+    translate 0.3s;
+
+  &:hover {
+    box-shadow: 0 12px 30px hsl(0 0% 100%);
+    translate: 0 -10px;
+  }
+
+  p {
+    font-weight: 800;
+  }
+}
+
+@keyframes bobbing {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .achievementCard {
+    animation: none;
+  }
+}

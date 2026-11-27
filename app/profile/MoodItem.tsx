@@ -10,6 +10,7 @@ import type {
   MoodResponseBodyDelete,
   MoodResponseBodyPut,
 } from '../api/moods/[moodId]/route';
+import styles from './profile.module.scss';
 
 type Props = {
   mood: Mood;
@@ -73,19 +74,34 @@ export default function MoodItem(props: Props) {
 
   if (!isEditing) {
     return (
-      <li>
-        {props.mood.emoji} {props.mood.description}{' '}
-        {
-          props.moodTypes.find((type) => type.id === props.mood.moodTypeId)
-            ?.name
-        }{' '}
-        <button type="button" onClick={() => setIsEditing(true)}>
+      <li className={`${styles.item} flex-wrap`}>
+        <span>{props.mood.emoji}</span>
+        <span className={styles.itemText}>{props.mood.description}</span>
+        <span className={styles.itemType}>
+          {
+            props.moodTypes.find((type) => type.id === props.mood.moodTypeId)
+              ?.name
+          }
+        </span>
+        <button
+          type="button"
+          className={styles.smallButton}
+          onClick={() => setIsEditing(true)}
+        >
           Edit
-        </button>{' '}
-        <button type="button" onClick={handleDelete}>
+        </button>
+        <button
+          type="button"
+          className={`${styles.smallButton} ${styles.deleteButton}`}
+          onClick={handleDelete}
+        >
           Delete
         </button>
-        <ErrorMessage>{errorMessage}</ErrorMessage>
+        {!!errorMessage && (
+          <div className="w-full">
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          </div>
+        )}
       </li>
     );
   }

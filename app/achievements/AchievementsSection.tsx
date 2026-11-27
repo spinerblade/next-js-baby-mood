@@ -14,7 +14,7 @@ type Props = {
 export default function AchievementsSection(props: Props) {
   const [isEditing, setIsEditing] = useState(false);
   return (
-    <>
+    <div className="flex flex-col gap-12 pt-8 px-4">
       <Timeline achievements={props.achievements} isEditing={isEditing} />
       <AchievementForm
         babyId={props.babyId}
@@ -23,6 +23,6 @@ export default function AchievementsSection(props: Props) {
         }}
         isEditing={isEditing}
       />
-    </>
+    </div>
   );
 }

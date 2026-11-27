@@ -1,3 +1,4 @@
+import { getBabies } from '@/database/babies';
 import {
   getAcceptedParentConnection,
   getParentConnectionRequests,
@@ -24,25 +25,28 @@ export default async function Onboarding() {
   }
 
   const connectionRequests = await getParentConnectionRequests(sessionToken);
-
   const acceptedConnection = await getAcceptedParentConnection(sessionToken);
+  const babies = await getBabies(sessionToken);
+  const isFirstSetup = babies.length === 0;
 
   return (
-    <>
-      <h1>Setup your Account details</h1>
-      <ProfileForm
-        firstName={user.firstName}
-        lastName={user.lastName}
-        birthDate={user.birthDate?.toISOString().slice(0, 10) ?? null}
-      />
+    <div className="flex flex-col gap-8 p-4">
+      <h1 className="text-center pt-3">Setup your Account details</h1>
+
       {acceptedConnection ? (
-        <BabyForm />
+        <BabyForm isFirstSetup={isFirstSetup} />
       ) : (
         <>
           <OnboardingForm />
           <PartnerRequests requests={connectionRequests} />
         </>
       )}
-    </>
+      <ProfileForm
+        firstName={user.firstName}
+        lastName={user.lastName}
+        birthDate={user.birthDate?.toISOString().slice(0, 10) ?? null}
+        profilePictureUrl={user.profilePictureUrl}
+      />
+    </div>
   );
 }

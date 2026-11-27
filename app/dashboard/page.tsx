@@ -54,9 +54,8 @@ export default async function DashboardPage() {
         latestMoodMessage={latestMoodMessage}
       />
       <main className={styles.mainContent}>
-        <h1>Dashboard</h1>
         <div className={styles.row}>
-          <MainInterface baby={baby}>
+          <MainInterface>
             <Chat
               user={user}
               partner={partner}

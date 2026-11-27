@@ -18,11 +18,11 @@ export default function OnboardingForm() {
   return (
     <div className={styles.container}>
       <section className={styles.partnerForm}>
-        <h2>Connect to your Partner</h2>
+        <h2>Connect to your partner</h2>
         <form action={formAction}>
-          <h3>Check if Partner is already signed up</h3>
+          <h3>Check if partner is already signed up</h3>
           <label>
-            Partner Username
+            Partner username
             <input
               name="partnerUsername"
               placeholder="Enter your partner's username"

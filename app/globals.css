@@ -34,6 +34,18 @@ body {
   color: var(--color-text);
   min-height: 100vh;
 }
+.buttonLink {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem; /* or 9999px for a pill */
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-weight: 600;
+  width: 8rem;
+}
+.buttonLink:hover {
+  background-color: var(--color-primary-hover);
+}
 
 @layer base {
   input,

@@ -5,6 +5,7 @@ import type { Baby } from '@/migrations/00004-createTableBabies';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { CreateAchievementResponseBodyPost } from '../api/achievements/route';
+import styles from './AchievementForm.module.scss';
 
 type Props = {
   babyId: Baby['id'];
@@ -21,6 +22,7 @@ export default function AchievementForm(props: Props) {
   const router = useRouter();
   return (
     <form
+      className={styles.form}
       onSubmit={async (event) => {
         event.preventDefault();
 
@@ -50,6 +52,7 @@ export default function AchievementForm(props: Props) {
         router.refresh();
       }}
     >
+      <h2>Create achievements</h2>
       <label>
         Achievement description
         <textarea
@@ -73,16 +76,19 @@ export default function AchievementForm(props: Props) {
           }}
         />
       </label>
-      <button>Create achievement</button>
-
-      <button
-        type="button"
-        onClick={() => {
-          props.onToggleEditing();
-        }}
-      >
-        {props.isEditing ? 'Done' : 'Edit'}
-      </button>
+      <div className={styles.actions}>
+        <button>Create achievement</button>
+      </div>
+      <div className={styles.actions}>
+        <button
+          type="button"
+          onClick={() => {
+            props.onToggleEditing();
+          }}
+        >
+          {props.isEditing ? 'Done' : 'Edit'}
+        </button>
+      </div>
 
       <ErrorMessage>{errorMessage}</ErrorMessage>
       {!!successMessage && <p>{successMessage}</p>}

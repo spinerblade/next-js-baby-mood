@@ -27,7 +27,7 @@ export default function ImageUpload(props: Props) {
       }}
     >
       {({ open }) => (
-        <button className="w-60" type="button" onClick={() => open()}>
+        <button type="button" onClick={() => open()}>
           {props.label}
         </button>
       )}

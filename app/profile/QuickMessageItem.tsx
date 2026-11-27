@@ -9,6 +9,7 @@ import type {
   QuickMessageResponseBodyDelete,
   QuickMessageResponseBodyPut,
 } from '../api/quickMessages/[quickMessageId]/route';
+import styles from './profile.module.scss';
 
 type Props = {
   quickMessage: QuickMessage;
@@ -71,20 +72,36 @@ export default function QuickMessageItem(props: Props) {
 
   if (!isEditing) {
     return (
-      <li>
-        {props.quickMessage.messageContent}{' '}
-        {
-          props.quickMessageTypes.find(
-            (type) => type.id === props.quickMessage.quickMessageTypeId,
-          )?.name
-        }{' '}
-        <button type="button" onClick={() => setIsEditing(true)}>
+      <li className={`${styles.item} flex-wrap`}>
+        <span className={styles.itemText}>
+          {props.quickMessage.messageContent}
+        </span>
+        <span className={styles.itemType}>
+          {
+            props.quickMessageTypes.find(
+              (type) => type.id === props.quickMessage.quickMessageTypeId,
+            )?.name
+          }
+        </span>
+        <button
+          type="button"
+          className={styles.smallButton}
+          onClick={() => setIsEditing(true)}
+        >
           Edit
-        </button>{' '}
-        <button type="button" onClick={handleDelete}>
+        </button>
+        <button
+          type="button"
+          className={`${styles.smallButton} ${styles.deleteButton}`}
+          onClick={handleDelete}
+        >
           Delete
         </button>
-        <ErrorMessage>{errorMessage}</ErrorMessage>
+        {!!errorMessage && (
+          <div className="w-full">
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          </div>
+        )}
       </li>
     );
   }

@@ -33,7 +33,7 @@ export async function partnerFormHandler(
 
   return {
     partnerUsername: partner.username,
-    message: `${partnerUsername} exists and is already signed up. Want to send a request to connect?`,
+    message: `${partnerUsername} exists and is already signed up! Do you want to send a request to connect?`,
   };
 }
 

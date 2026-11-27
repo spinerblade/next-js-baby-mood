@@ -6,7 +6,11 @@ import { useState } from 'react';
 import type { CreateBabyResponseBodyPost } from '../api/babies/route';
 import styles from './BabyForm.module.scss';
 
-export default function BabyForm() {
+type Props = {
+  isFirstSetup: boolean;
+};
+
+export default function BabyForm(props: Props) {
   const [babyName, setBabyName] = useState('');
   const [babyBirthDate, setBabyBirthDate] = useState('');
   const [babyWeight, setBabyWeight] = useState('');
@@ -19,6 +23,14 @@ export default function BabyForm() {
 
   return (
     <div className={styles.container}>
+      {props.isFirstSetup ? (
+        <>
+          <h2>You are connected to your partner!</h2>
+          <i>One last step to unlock full access to the app:</i>
+        </>
+      ) : (
+        <h2>You are connect to your partner!</h2>
+      )}
       <section className={styles.babyForm}>
         <h2>Set up your Baby's Information</h2>
         <form
@@ -46,7 +58,9 @@ export default function BabyForm() {
               return;
             }
             setErrorMessage('');
-            setSuccessMessage(`${responseBody.baby.name} was added!`);
+            setSuccessMessage(
+              `${responseBody.baby.name} has joined the chat! 😎 `,
+            );
             setBabyName('');
             setBabyBirthDate('');
             setBabyGenderId('');

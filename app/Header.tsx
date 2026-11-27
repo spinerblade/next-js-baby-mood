@@ -22,14 +22,28 @@ export default async function Header() {
         <ul>
           {!user ? null : (
             <>
-              {!user.profilePictureUrl ? (
+              <li className={styles.circleLink}>
+                <Link href="/dashboard">BabyMood</Link>
+              </li>
+              <li className={styles.circleLink}>
+                <Link href="/achievements">Achievements</Link>
+              </li>
+              {selectedBaby && (
                 <li>
+                  <BabySwitcher
+                    babies={babies}
+                    selectedBabyId={selectedBaby.id}
+                  />
+                </li>
+              )}
+              {!user.profilePictureUrl ? (
+                <li className={styles.pushRight}>
                   <Link href={`/profile/${user.username}`}>
                     {getDisplayName(user)}
                   </Link>
                 </li>
               ) : (
-                <li>
+                <li className={styles.pushRight}>
                   <Link href={`/profile/${user.username}`}>
                     <CloudinaryImage
                       publicId={user.profilePictureUrl}
@@ -43,21 +57,6 @@ export default async function Header() {
               <li>
                 <LogoutButton />
               </li>
-              <li>
-                <Link href="/dashboard">BabyMood</Link>
-              </li>
-
-              <li>
-                <Link href="/achievements">Achievements</Link>
-              </li>
-              {selectedBaby && (
-                <li>
-                  <BabySwitcher
-                    babies={babies}
-                    selectedBabyId={selectedBaby.id}
-                  />
-                </li>
-              )}
             </>
           )}
         </ul>

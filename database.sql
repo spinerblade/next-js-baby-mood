@@ -11,4 +11,4 @@ GRANT ALL privileges ON database baby_mood TO baby_mood;
 CREATE SCHEMA baby_mood AUTHORIZATION baby_mood;
 
 -- Connect to Database
-psql - u baby_mood baby_mood
+-- psql -U baby_mood baby_mood

@@ -1,6 +1,7 @@
 'use client';
 import ErrorMessage from '@/ErrorMessage';
 import { getSafeReturnToPath } from '@/util/validation';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { LoginResponseBodyPost } from '../api/login/route';
@@ -74,6 +75,14 @@ export default function LoginForm(props: Props) {
           />
         </label>
         <button>Log In</button>
+
+        <p>
+          Don't have an account yet? Sign up{' '}
+          <Link className={styles.signUpLink} href="/signUp">
+            here!
+          </Link>
+        </p>
+
         <ErrorMessage>{errorMessage}</ErrorMessage>
       </div>
     </form>

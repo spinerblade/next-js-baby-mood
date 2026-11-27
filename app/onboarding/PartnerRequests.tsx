@@ -7,6 +7,7 @@ import type {
   AcceptParentConnectionResponseBodyPut,
   DeclineParentConnectionResponseBodyDelete,
 } from '../api/parentConnections/[id]/route';
+import styles from './PartnerRequests.module.scss';
 
 export default function PartnerRequests(props: {
   requests: ParentConnectionRequest[];
@@ -21,9 +22,11 @@ export default function PartnerRequests(props: {
       <ul>
         {props.requests.map((request) => {
           return (
-            <li key={request.id}>
+            <li className={styles.request} key={request.id}>
               <h2>New Request</h2>
-              <div>{request.username}</div>
+              <p className="inline-block px-3 py-1 rounded-full font-semibold bg-(--color-primary) text-(--color-text-inverse)">
+                {request.username}
+              </p>
 
               <button
                 onClick={async () => {
@@ -43,7 +46,7 @@ export default function PartnerRequests(props: {
                   router.refresh();
                 }}
                 type="button"
-                className="bg-gray-700 hover:bg-gray-500 m-4"
+                className="m-4"
               >
                 Accept
               </button>
@@ -65,7 +68,7 @@ export default function PartnerRequests(props: {
                   router.refresh();
                 }}
                 type="button"
-                className="bg-gray-700 hover:bg-gray-500 m-4"
+                className="m-4"
               >
                 Decline
               </button>

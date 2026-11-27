@@ -21,3 +21,15 @@
   flex-direction: column;
   gap: 0.25rem;
 }
+
+.signUpLink {
+  margin-top: 1rem;
+  text-align: center;
+
+  color: blue;
+  text-decoration: underline;
+  &:hover {
+    opacity: 0.8;
+    transition: color 0.2s;
+  }
+}

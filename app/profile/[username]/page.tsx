@@ -1,4 +1,3 @@
-import ImageUpload from '@/app/ImageUpload';
 import { getMoods } from '@/database/moods';
 import { getMoodTypes } from '@/database/moodTypes';
 import { getQuickMessages } from '@/database/quickMessages';
@@ -8,9 +7,9 @@ import { getCookie } from '@/util/cookies';
 import { getDisplayName } from '@/util/format';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { updateUserPicture } from '../actions';
 import CloudinaryImage from '../CloudinaryImage';
 import MoodSetup from '../MoodSetup';
+import styles from '../profile.module.scss';
 import QuickMessageSetup from '../QuickMessageSetup';
 
 export const metadata = {
@@ -36,30 +35,34 @@ export default async function ProfilePage(
   const quickMessageTypes = await getQuickMessageTypes(sessionToken);
   const quickMessages = await getQuickMessages(sessionToken);
   return (
-    <>
+    <div className={styles.page}>
       <h1>Profile</h1>
-      <h2>{getDisplayName(user)}</h2>
-      {user.profilePictureUrl && (
-        <CloudinaryImage
-          publicId={user.profilePictureUrl}
-          alt={getDisplayName(user)}
-          width={150}
-          height={150}
+      <section className={`${styles.card} ${styles.header}`}>
+        <div className={styles.avatar}>
+          {user.profilePictureUrl && (
+            <CloudinaryImage
+              publicId={user.profilePictureUrl}
+              alt={getDisplayName(user)}
+              width={150}
+              height={150}
+            />
+          )}
+        </div>
+        <div className="flex flex-col gap-1">
+          <h2>{getDisplayName(user)}</h2>
+          <span className={styles.username}>@{user.username}</span>
+          <Link className="buttonLink self-start" href="/onboarding">
+            Edit profile & partner and add babies
+          </Link>
+        </div>
+      </section>
+      <div className={styles.grid}>
+        <MoodSetup moodTypes={moodTypes} moods={moods} />
+        <QuickMessageSetup
+          quickMessageTypes={quickMessageTypes}
+          quickMessages={quickMessages}
         />
-      )}
-      <ImageUpload
-        folder="users"
-        label="Upload profile picture"
-        onUpload={updateUserPicture}
-      />
-
-      <h3>Setup</h3>
-      <Link href="/onboarding">Click here to add your partner and babies</Link>
-      <MoodSetup moodTypes={moodTypes} moods={moods} />
-      <QuickMessageSetup
-        quickMessageTypes={quickMessageTypes}
-        quickMessages={quickMessages}
-      />
-    </>
+      </div>
+    </div>
   );
 }

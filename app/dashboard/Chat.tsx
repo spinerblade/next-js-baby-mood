@@ -26,8 +26,15 @@ export default function Chat(props: Props) {
   }
   return (
     <>
-      <h3>Messages</h3>
-      {props.messages.length === 0 && <p>No messages yet</p>}
+      <h3>Chat</h3>
+      {props.messages.length === 0 && (
+        <>
+          <p>No messages predefined yet</p>
+          <Link className="buttonLink" href={`/profile/${props.user.username}`}>
+            create one
+          </Link>
+        </>
+      )}
       <ul className={styles.messageList}>
         {props.messages.map((message) => {
           const isOwn = message.senderId === props.user.id;
@@ -56,10 +63,12 @@ export default function Chat(props: Props) {
         })}
       </ul>
       {props.moods.length === 0 ? (
-        <p>
-          No moods yet –{' '}
-          <Link href={`/profile/${props.user.username}`}>create one</Link>
-        </p>
+        <>
+          <p>No moods predefined yet.</p>
+          <Link className="buttonLink" href={`/profile/${props.user.username}`}>
+            create one
+          </Link>
+        </>
       ) : (
         <SendMood moods={props.moods} babyId={props.babyId} />
       )}

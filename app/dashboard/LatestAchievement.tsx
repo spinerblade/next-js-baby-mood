@@ -8,7 +8,7 @@ type Props = {
 
 export default function LatestAchievement(props: Props) {
   return (
-    <section className={styles.card}>
+    <section className={styles.achievementCard}>
       <h3>Latest Achievement</h3>
       {props.achievement ? (
         <>
@@ -20,9 +20,13 @@ export default function LatestAchievement(props: Props) {
           </small>
         </>
       ) : (
-        <p>No achievements yet</p>
+        <>
+          <p>No achievements yet.</p>
+          <Link className="buttonLink" href="/achievements">
+            Add your baby's first achievements!
+          </Link>
+        </>
       )}
-      <Link href="/achievements">See all achievements</Link>
     </section>
   );
 }
