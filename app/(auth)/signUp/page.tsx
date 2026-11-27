@@ -1,6 +1,5 @@
 import { getValidSession } from '@/database/sessions';
 import { getCookie } from '@/util/cookies';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { SignUpForm } from './SignUpForm';
 
